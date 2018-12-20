@@ -1,0 +1,1591 @@
+\documentclass[10pt, a4paper]{extarticle}
+
+
+% FORMAT
+\usepackage[
+	top    = 20mm,
+	left   = 25mm,
+	right  = 25mm,
+	bottom = 20mm]
+	{geometry}	
+
+\usepackage[onehalfspacing]{setspace} 
+\setlength{\parindent}{0pt} 
+
+
+% MATHEMATIK-UMGEBUNG
+\usepackage{mathtools, amsmath, amssymb, amsfonts}
+\usepackage[all]{xy}
+\usepackage{nicefrac}
+
+
+% ALIGN-UMGEBUNG
+\setlength{\abovedisplayskip}{5pt} 
+\setlength{\belowdisplayskip}{5pt}
+
+
+% TABELLEN
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{siunitx}
+\usepackage{xcolor}
+\usepackage{colortbl}
+
+\newcolumntype{K}{\columncolor[grey]{0.1}\raggedright}
+%\def\arraystretch{1.5}
+
+
+% ABBILDUNGEN
+\usepackage[export]{adjustbox}
+\usepackage{standalone}
+\usepackage{graphicx}
+
+\renewcommand{\figurename}{Abbildung}
+
+
+% SPRACHE
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+
+
+% AUFZAEHLUNGEN
+\usepackage{enumitem}
+	
+	\renewcommand
+		{\labelenumi} 
+		{\color{hsrmWarmGreyDark}{(\alph{enumi})}}	
+	
+	\renewcommand
+		{\labelenumii}
+		{\color{hsrmWarmGreyDark}{(\arabic{enumii})}}
+	
+	\setlist{
+		topsep     = 0pt,
+		itemsep    = 0pt, 
+		wide       = 0pt, 
+		labelwidth = 1.5em, 
+		labelsep   = 0.5em, 
+		leftmargin = \dimexpr\labelwidth +\labelsep\relax}
+	
+	\newlist{alg_enumerate}{enumerate}{3}
+	
+	\setlist[alg_enumerate]{
+		start      = 0,
+		label      = \hspace{-20.5pt}\protect\algcircled{S\arabic*},
+		itemsep    = 1pt, 
+		wide       = 0pt, 
+		labelwidth = 2.5em, 
+		labelsep   = 1em, 
+		leftmargin = \dimexpr\labelwidth +\labelsep\relax}
+
+\setlist[itemize]{
+	topsep  = 0pt, 
+	itemsep = 0pt}
+	
+\renewcommand{\labelitemi}{\color{hsrmWarmGreyDark}{$ \circ $}}
+\renewcommand{\labelitemii}{\color{hsrmWarmGreyDark}{$ - $}}
+
+
+% FORMATIERUNG INHALTSVERZEICHNIS
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linktoc=all,linkcolor=black}
+
+\usepackage{ etoc }
+\newcommand{\etocsettocmargins}[3][0pt]{%
+	\renewcommand{\etocaftertitlehook}{\let\oldpar\par\def\par{%
+   		\advance\leftskip  by -#1\relax
+   		\advance\leftskip  by  #2\relax
+   		\advance\rightskip by  #3\relax\oldpar}}}
+   		
+\makeatletter
+\renewcommand\@seccntformat[1]
+	{\csname the#1\endcsname\csname#1suffix\endcsname}
+\newcommand
+	{\etocresettocmargins}
+	{\renewcommand{\etocaftertitlehook}{\relax}}
+\makeatother
+
+\etocsettocdepth{2} % Inhaltsverzeichnis
+\etocsettocstyle{\section*{Inhaltsverzeichnis}\vspace{-0.5cm}}{}
+
+
+% FORMATIERUNG THEOREME
+\usepackage[thmmarks, amsmath]{ntheorem} 
+\usepackage[framemethod = TikZ]{mdframed}
+	\usetikzlibrary{decorations.pathreplacing}
+	\usetikzlibrary{arrows}
+	
+	\newcommand*\algcircled[1]
+		{\tikz[baseline = (char.base)]{
+			\draw[
+				line width = 21pt,
+    			draw       = gray!30,
+    			fill       = gray!30] 
+    			(0,0) -- (-0.7,0);    		
+    		\node[
+    			shape        = circle,
+    			minimum size = 20pt,
+    			draw         = gray!30,
+    			fill         = gray!30] 
+    			(char) {\bfseries #1};}}
+    
+    \newcommand*\circled[1]
+    	{\tikz[baseline=(char.base)]{   		
+    		\node[
+    			shape        = circle,
+    			line width   = 1.5pt,
+    			minimum size = 20pt,
+    			draw         = gray!30] 
+    			(char) {\bfseries #1};}}
+
+\makeatletter 
+\renewtheoremstyle{nonumberplain}% 
+	{\item[\hskip\labelsep \theorem@headerfont ##1\theorem@separator]}%
+	{\item[\hskip\labelsep \theorem@headerfont ##1\ \normalfont({##3})\bfseries\theorem@separator]} 
+\renewtheoremstyle{plain}% 
+	{\item[\hskip\labelsep \theorem@headerfont ##1\ ##2\theorem@separator]}%
+	{\item[\hskip\labelsep \theorem@headerfont ##1\ ##2\ \normalfont({##3})\bfseries\theorem@separator]} 
+\makeatother
+
+\theoremstyle{nonumberplain}
+\theoremseparator{.}
+\theoremprework{\par\smallskip}
+	\newtheorem{lem}{Lemma}
+
+\theoremprework{\par\smallskip}
+	\newtheorem{folg}{Folgerung}
+	
+\theorembodyfont{\upshape}
+\theoremprework{\par\smallskip}
+	\newtheorem{kor}{Korollar}
+
+\theoremprework{\par\smallskip}
+	\newtheorem{bem}{Bemerkung}
+
+\theoremprework{\par\smallskip}
+	\newtheorem{bsp}{Beispiel}	
+	
+\theoremprework{\par\smallskip}
+\theoremheaderfont{\itshape}
+\theoremsymbol{\ensuremath{\square}}
+	\newtheorem{proof}{Beweis}
+	
+\theoremstyle{plain}
+\theoremheaderfont{\bfseries}
+\theoremprework{\par\smallskip}
+\theoremsymbol{\ensuremath{\clubsuit}}
+	\newtheorem{afg}{Aufgabe}
+
+\theoremsymbol{\gobble}
+\theoremprework{\par\smallskip}
+	\newtheorem{lsg}{Lösung}
+
+% Satz	
+\newcounter{theorem}[part]\setcounter{theorem}{0}
+\newcommand{\thetheo}{}%\arabic{section}.\arabic{theorem}
+\newenvironment{theorem}[1][]{%
+	\par\medskip
+	\refstepcounter{theorem}%
+	\ifstrempty{#1}{\mdfsetup{frametitle={%
+		\tikz[baseline=(current bounding box.east),outer sep=0pt] 
+		\node[anchor=east,rounded corners , rectangle, fill=hsrmRedDark!30]{\strut Satz \thetheo.};}}}%
+	{\mdfsetup{frametitle={%
+		\tikz[baseline=(current bounding box.east),outer sep=0pt]
+		\node[anchor=east,rectangle, rounded corners,fill=hsrmRedDark!30]{\strut Satz\thetheo\normalfont{ (#1)}\bfseries.};}}}%
+	\mdfsetup{
+		font=\itshape,
+		skipabove=5pt,
+		skipbelow=5pt,
+		innertopmargin=5pt,
+		innerbottommargin=10pt, 
+		linecolor=hsrmRedDark!30, 
+		linewidth=1.5pt,
+		topline=true, 
+		%roundcorner=3pt,
+		frametitleaboveskip=-\ht\strutbox,
+		nobreak=true}
+\begin{mdframed}}
+{\end{mdframed}\par\smallskip}
+
+% Definition
+\newcounter{defi}[part]\setcounter{defi}{0}
+\renewcommand{\thedefi}{}
+\newenvironment{defi}[1][]{%
+	\par\medskip
+	\refstepcounter{defi}%
+	\ifstrempty{#1}{\mdfsetup{innertopmargin=10pt}}%
+	{\mdfsetup{frametitle={%
+		\tikz[baseline=(current bounding box.east),outer sep=0pt]
+		\node[anchor=east,rectangle, rounded corners,fill=hsrmRedDark!30]{\strut Definition\thedefi\normalfont\ (#1)\bfseries.};}}}%
+	\mdfsetup{
+		backgroundcolor=hsrmRedDark!10,
+		innertopmargin=5pt,
+		innerbottommargin=10pt, 
+		linecolor=hsrmRedDark!30, 
+		linewidth=1.5pt,
+		topline=true, 
+		%roundcorner=3pt,
+		frametitleaboveskip=-\ht\strutbox,
+		nobreak=true}
+\begin{mdframed}}
+{\end{mdframed}\par\smallskip}
+
+\newcounter{alg}[part]\setcounter{alg}{0}
+\renewcommand{\thealg}{\arabic{alg}}
+\newenvironment{alg}[1][]
+{%
+	\par\medskip
+	\refstepcounter{alg}%
+	\ifstrempty{#1}{
+		\mdfsetup{innertopmargin=10pt}}{
+		\mdfsetup{
+			frametitle = {%
+				\tikz[baseline = (current bounding box.east)]
+				\node[
+					anchor          = east, 
+					fill            = hsrmRedDark!30,
+					rectangle, 
+					rounded corners]
+				{\strut Algorithmus \thealg\normalfont\ (#1)\bfseries.};
+				\hfill
+				\tikz[
+					baseline=(current bounding box.east), 
+					outer sep = 0pt]
+				\node[above=5pt, circle, fill=hsrmRedDark!30]
+					{\strut\bfseries A\thealg};}}}%
+	\mdfsetup{
+		font                = \itshape,
+		backgroundcolor     = hsrmRedDark!10,
+		innertopmargin      = 5pt,
+		innerbottommargin   = 10pt, 
+		linecolor           = hsrmRedDark!30, 
+		linewidth           = 1.5pt,
+		topline             = true, 
+%		roundcorner         = 3pt,
+%		leftline            = false,
+%		rightline           = false,
+		frametitleaboveskip = -12pt,
+		nobreak             = true}
+	\begin{mdframed}
+}
+{\end{mdframed}\par\smallskip}
+
+
+% FORMATIERUNG ÜBERSCHRIFT
+\usepackage[explicit]{titlesec}
+	\usetikzlibrary{shapes,shadows,calc}
+	\usetikzlibrary{positioning,calc}
+\usepackage{xcolor}
+
+\definecolor{hsrmRed}{rgb}{0.882352941,0,0.098039216}
+\definecolor{hsrmRedDark}{rgb}{0.588235294,0,0.058823529}
+\definecolor{hsrmWarmGreyDark}{rgb}{0.2745098,0.2549019,0.2352941}
+\definecolor{hsrmWarmGreyLight}{rgb}{0.6666666,0.6470588,0.627450}
+
+% Section
+\newcommand
+	{\mySection}[2]
+	{
+		\ifnum\thesection=0
+			\newcommand{\numColor}{white}
+		\else
+			\newcommand{\numColor}{hsrmRedDark}
+		\fi
+		\centering
+		\begin{tikzpicture}
+		\node (A) at (0,0) {};
+		\draw[hsrmRedDark, fill = hsrmRedDark] 
+			($ (A) + (-6cm, -0.5cm) $) 
+				node[left=-5pt] {\Large $ \twoheadrightarrow $} --
+			($ (A) + (6cm, -0.5cm) $) 
+				node[right=-5pt] {\Large $ \twoheadleftarrow $};
+		\node[\numColor] at (A) {{\huge\textbf{\thesection}}};
+		\node[hsrmRedDark] (B) at ($ (A) + (0cm, -1.2cm) $) {
+		\parbox{\textwidth - 4cm}{\centering\huge\textbf{#1}}};
+		\end{tikzpicture}
+	}
+
+% Subsection
+\newcommand
+	{\mySubsection}[1]
+	{\color
+		{hsrmRedDark}
+		{\Large\textbf{\thesubsection \hspace{.5em}#1}}
+	}
+
+% Subsubsection
+\newcommand
+	{\mySubsubsection}[1]
+	{\color
+		{hsrmRedDark}
+		{\large\textbf{\thesubsubsection \hspace{.5em}#1}}
+	}
+
+% Section
+\titleformat{\section}
+	{\normalfont}
+	{}
+	{0em}
+	{\mySection{#1}{\thesection}}
+\titlespacing
+	{\section}
+	{0pc}
+	{0pt}
+	{24pt}[0pc]
+
+% Subsection
+\titleformat
+	{\subsection}
+	{\normalfont}{}{0em}
+	{\mySubsection{#1}}
+\titlespacing
+	{\subsection}
+	{0pc}
+	{24pt}
+	{12pt}[0pc]
+
+% Subsubsection
+\titleformat
+	{\subsubsection}
+	{\normalfont}
+	{}
+	{0em}
+	{\mySubsubsection{#1}}
+\titlespacing
+	{\subsubsection}
+	{0pc}
+	{24pt}
+	{12pt}[0pc]
+
+% Paragraph
+\renewcommand
+	{\paragraph}[1]
+	{\par\bigskip {\color{hsrmRedDark}#1}\par}
+
+
+% SHORTCUTS
+\let\emptyset\varnothing
+\newcommand{\case}[2]{#1 &\text{, falls }#2}
+
+
+% TITELSEITE
+\title{Statistisches Lernen}
+\author{Mitschriften bei Prof. Dr. Martin Bogdan\\ Universität Leipzig}
+\date{WS 2018/19}
+
+\makeatletter							
+\def\printtitle{{\hspace{2cm} 
+	\color{hsrmRedDark}\Huge\bfseries \parbox{\textwidth -4cm}{\@title}}}
+\def\printauthor{{\hspace{2cm} 
+	\color{hsrmRedDark}\large \parbox{\textwidth -4cm}{\@author}}}		
+\def\printdate{{\hspace{2cm} 
+	\color{hsrmRedDark}\large \parbox{\textwidth -4cm}{\@date}}}		
+\makeatother	
+
+
+\begin{document}
+
+
+\begin{tikzpicture}[remember picture, overlay]
+\fill[hsrmRedDark] 
+	($ (current page.north west) $) rectangle 
+	($ (current page.south west) + (4cm, 0cm) $);
+\end{tikzpicture}
+
+
+% TITELSEITE
+\null\vspace{4cm}
+\printdate\par\bigskip\bigskip
+\printtitle\par\bigskip\bigskip
+\printauthor
+
+
+\vfill
+\begin{flushright}
+\large
+\emph{An Introduction to Statistical Learning}\\
+James, G., Witten, D., Hastie, T. and Tibshirani, R.\par\bigskip
+
+\emph{Lehrbuch der Wahrscheinlichkeitsrechnung}\\
+Gnedenko, B.W.\par\bigskip
+
+\emph{Theoretical Statistics}\\
+Cox, D.R. and Hinkley, D.V.
+\end{flushright}
+\thispagestyle{empty}
+\clearpage
+
+
+% INHALTSVERZEICHNIS
+\localtableofcontents
+\thispagestyle{empty}
+\clearpage
+
+
+% DOKUMENT
+\pagenumbering{arabic}
+
+
+\section{Einführung}
+
+\subsection{Vorbemerkungen}
+Beim statistischen Lernen geht es darum, intelligente Schlüsse zu ziehen. Der Fokus dieser Vorlesung liegt auf Methoden zur Analyse, weniger auf Design, und mehr auf Beispielen aus dem Bereich der klinischen Studien. Darüberhinaus erstrecken sich die Anwendungen des statistischen Lernens aber auch auf viele andere Fachgebiete.
+
+\paragraph{Beispielanwendungen:}
+\begin{itemize}
+\item Unterscheidung von Behandlungen $ A $ und $ B $
+\item Eigenschaften diagnostischer Tests
+\item Zusammenhang von Krankheiten von $ A $ und $ B $
+\item Risikobewertung (Lebensmittel, Strahlung, $ \ldots $)
+\end{itemize}
+
+\subsection{Wahrscheinlichkeit}
+
+\subsubsection{Zugänge}
+\begin{enumerate}
+\item relative Häufigkeiten (frequentistisch)
+\item Maß für Überzeugung (bayesianisch)
+\end{enumerate}
+
+In dieser Vorlesung wird vor allem der frequentistische Zugang betrachtet. Dieser ist gewissermaßen intuitiv und basiert auf wiederholbaren 'Experimenten' (Münzwurf, radioaktiver Zerfall, Schwangerschaft bei Kontrazeptionsmethode $ A $, 5-Jahres-Überleben nach Chemotherapie $ B $, Wettervorhersagen).\par\bigskip
+
+Der Bayesianische Zugang liefert Werkzeuge, um mit Eingangsüberzeugungen ('Prior') und Lernen u.a. durch Daten ('Posterior') umzugehen. Dabei wird jedoch gelegentlich Willkür kritisiert.\par\bigskip
+
+In den ersten Vorlesungen folgen wir einem recht traditionellen Zugang, um ein solides Grundverständnis zu erlangen. Dabei werden wir aus zeitlichen Gründen nicht streng mathematisch vorgehen können (Stichwort: Kolmogorovsche Axiomatik).
+
+\subsubsection{Das Ereignisfeld}
+
+\begin{defi}[Ereignis]
+Als \emph{Ereignis} bezeichnet man einen möglichen Ausgang eines Zufallsexperiments.
+\end{defi}\par\bigskip
+
+Beispielsweise stellt 'Zahl liegt oben' beim Münzwurf ein Ereignis dar.
+
+\begin{defi}[Ereignisfeld]
+Ein System heißt \emph{Ereignisfeld}, wenn 
+\begin{enumerate}
+\item es das sichere und unmögliche Ereignis enthält,
+\item $ A $ und $ B $ Teil des Systems sind, dann auch $ AB $ bzw. $ A\cap B $. 'Produkt' von $ A $ und $ B $ bedeutet das gleichzeitige Auftreten beider Ereignisse.
+\item $ A $ und $ B $ Teil des Systems sind, dann auch $ A+B $ bzw. $ A\cup B $. 'Summe' von $ A $ und $ B $ bedeutet, dass mindestens eines der Ereignisse eintritt.
+\item $ A $ und $ B $ Teil des Systems sind, dann auch $ A-B $ bzw. $ A\setminus B $. 'Differenz' von $ A $ und $ B $ bedeutet, dass $ A $ eintritt, während $ B $ nicht eintritt.
+\end{enumerate}
+\end{defi}
+
+\paragraph{Beispiel (Münzwurf):}
+Wir betrachten einen Münzwurf und das Ereignisfeld $ \{A,B,\Omega,\varnothing\} $. Dann kann man folgende Modellierung vornehmen:
+
+\begin{figure}[h]
+\centering
+\begin{tabular}{ll} 
+Variable & Beschreibung \\ 
+\midrule 
+$ A $ & Zahl liegt oben. \\  
+$ B $ & Wappen liegt oben. \\  
+$ \Omega$ & Zahl oder Wappen liegen oben. \\  
+$  \varnothing$ & Weder Zahl noch Wappen liegen oben. \\  
+\end{tabular} 
+\end{figure}
+
+\subsubsection{Gesetze der Ereignisse}
+\begin{enumerate}
+\item Kommutativität: 
+\begin{align*}
+A+B&=B+A\\
+AB&=BA
+\end{align*} 
+\item Assoziativität: \begin{align*}
+(A+B)+C&=A+(B+C)\\
+(AB)C&=A(BC)
+\end{align*} 
+\item Distributivität:
+\begin{align*}
+A(B+C)&=AB+AC\\
+A+(BC)&=(A+B)(A+C)
+\end{align*} 
+\item Identität:
+\begin{align*}
+A+A&=A\\
+AA&=A 
+\end{align*} 
+\end{enumerate}
+
+\subsubsection{Wahrscheinlichkeitsbegriff}
+\begin{enumerate}
+\item[Axiom 1:] Jedem Ereignis $ A $ aus dem Ereignisfeld $ \mathcal{F} $ ordnet man eine nichtnegative Zahl $ P(A) $, die Wahrscheinlichkeit, zu.
+\item[Axiom 2:] $ P(\Omega)=1 $, wobei $ \Omega $ das sichere Ergebnis ist.
+\item[Axiom 3:] Sind Ereignisse $ A_i $ $ (i=1,\ldots,n) $ paarweise unvereinbar (d.h. $ A_iA_j=\varnothing $ für $ i\neq j $), so gilt $ P(A_1+A_2+\ldots+A_n)=P(A_1)+P(A_2)+\ldots+P(A_n) $.
+\end{enumerate}
+
+\paragraph{Eigenschaften:} 
+\begin{enumerate}
+\item $ P(\varnothing)=0 $
+\item $ P(\bar{A})=1-P(A) $ für $ \bar{A}:=\Omega\setminus A $
+\item $ 0\leq P(A)\leq 1 $
+\item Für $ A\subset B $ ('$ A $ ist Teilereignis von $ B $' bzw. '$ A $ zieht $ B $ nach sich') folgt $ P(A)\leq P(B) $.
+\item $ P(A+B)=P(A)+P(B)-P(AB) $ 
+\item $ P(A_1+\ldots+A_n)\leq P(A_1)+\ldots+P(A_n) $
+\end{enumerate}
+
+\subsubsection{Bedingte Wahrscheinlichkeit}
+
+Die Wahrscheinlichkeit von $ A $ unter der Bedingung, dass $ B $ eingetreten ist, schreibt man $ P(A\mid B) $. Diese ist definiert als \begin{align*}
+P(A\mid B):=\frac{P(AB)}{P(B)}.
+\end{align*}
+
+\paragraph{Motivation:} Gegeben seien $ n $ unvereinbare gleichwahrscheinliche Ereignisse $ A_1,\ldots,A_n $ mit $ m $ günstig für $ A $, $ k $ günstig für $ B $ und $ r $ günstig für $ AB $. Offensichtlich folgen $ r\leq k $ und $ r\leq m $. Es ergibt sich \begin{align*}
+P(A\mid B)=\frac{r}{k}=\frac{\frac{r}{n}}{\frac{k}{n}}=\frac{P(AB)}{P(B)}
+\end{align*}
+
+\paragraph{Beispiel (Würfel):} Zwei Würfel werden geworfen. Wie groß ist die Wahrscheinlichkeit, die Summe 8 zu erhalten ($ A $), falls die Summe gerade ist ($ B $)? Zunächst bestimmt man durch einfache Überlegung \begin{align*}
+P(A)&=\frac{5}{36},\\
+P(B)&=\frac{1}{2},\\
+P(AB)&=\frac{5}{36}.
+\end{align*}
+Daraus ergibt sich nun \begin{align*}
+P(A\mid B)=\frac{\frac{5}{36}}{\frac{1}{2}}=\frac{5}{18}.
+\end{align*}
+
+\begin{theorem}[Bayes'sche Formel] 
+Seien $ A_1,\ldots,A_n $ unvereinbar und ein vollständiges System ($ \sum_i A_i=\Omega $). Sei ferner $ P(B)\neq0 $, dann folgt \begin{align*}
+P(A_i\mid B)=\frac{P(B\mid A_i)\cdot P(A_i)}{\sum_{i=1}^nP(B\mid A_j)\cdot P(A_j)}.
+\end{align*}
+\end{theorem}
+
+\subsubsection{Anwendung von bedingten Wahrscheinlichkeiten}
+Bedingte Wahrscheinlichkeiten spielen unter anderem eine wichtige Rolle bei diagnostischen Verfahren. Es seien $ D^+,D^- $ (Diagnose) zwei mögliche Krankheitszustände (krank bzw. gesund) und $ T^+,T^- $ (Test) die zwei möglichen Ergebnisse eines diagnostischen Tests. Unter diesen Voraussetzungen führt man folgende Bezeichnungen ein: 
+
+\begin{figure}[h]
+\centering
+\begin{tabular}{ll}
+Variable & Beschreibung \\
+\midrule
+$ P(D^+) $ & Prävalenz \\ 
+$ P(T^+\mid D^+) $ & Sensitivität \\ 
+$ P(T^-\mid D^-) $ & Spezifität \\ 
+$ P(D^+\mid T^+) $ & Positiv-prädiktiver Wert (engl. PPV) \\ 
+$ P(D^-\mid T^-) $ & Negativ-prädiktiver Wert (engl. NPV) \\
+\end{tabular} 
+\end{figure}
+
+\subsection{Zufallsvariablen und Verteilungsfunktionen}
+
+Eine Zufallsgröße ist eine Größe, deren Werte von Zufall abhängen und für die eine Wahrscheinlichkeitsverteilungsfunktion existiert. Jedem Elementarereignis $ \omega\in\Omega $ (unzerteilbar) wird eine reelle Zahl zugeordnet durch $ X=X(\omega)\colon \Omega\longrightarrow\mathbb{R} $. Mit \begin{align*}
+F_X(t):=P(X<t)
+\end{align*}
+bezeichnet man die Verteilungsfunktion der Zufallsgröße $ X $. Sie ist monoton nicht fallend, linksseitig stetig und gehorcht den Bedingungen $ F(-\infty)=0 $ und $ F(\infty)=1 $. Umgekehrt lässt sich jede Funktion mit diesen Eigenschaften als Verteilungsfunktion auffassen.
+
+\paragraph{Wichtige Verteilungsfunktionen:}
+
+\begin{itemize}
+\item Binomialverteilung:
+\begin{align*}
+P_n(m)=\binom{n}{m}p^mq^{n-m}
+\end{align*}
+Die zugehörige Verteilungsfunktion ergibt sich mit \begin{align*}
+F(x)=\begin{cases}
+\case{0}{x\leq 0}\\
+\case{\sum_{k<x}P_k}{0<x\leq n}\\
+\case{1}{x>n.}
+\end{cases}
+\end{align*}
+
+\item Normalverteilung: Für $ \sigma>0 $ ergibt sich die Verteilungsfunktion der Normalverteilung mit
+\begin{align*}
+F(x)=\Phi(x)=\frac{1}{\sigma\sqrt{2\pi}}\int_{-\infty}^xe^{\frac{-(z-\sigma)^2}{2\sigma^2}}\ \mathrm{d}z.
+\end{align*}
+
+\end{itemize}
+
+\subsection{Erwartungswert, Varianz und weitere Momente}
+
+Der Erwartungswert $ \mathbb{E}(X) $ einer Zufallsgröße $ X $ ist im diskreten Fall definiert als \begin{align*}
+\mathbb{E}(X)=\sum_ix_ip_i,
+\end{align*}
+wobei $ x_i $ die möglichen Realisierungen der Zufallsgröße und $ p_i $ die zugehörigen Eintrittswahrscheinlichkeiten bezeichnen. Im stetigen Fall lautet die Definition: \begin{align*}
+\mathbb{E}(X)=\int_{-\infty}^\infty x\cdot p(x)\ \mathrm{d}x.
+\end{align*}
+
+\paragraph{Beispiele:}
+\begin{itemize}
+\item Würfel: \begin{align*}
+\mathbb{E}(X)=\frac{1}{6}\sum_{i=1}^6i=\frac{21}{6}=\frac{7}{2}.
+\end{align*}
+
+\item Binomialverteilung: \begin{align*}
+\mathbb{E}(X)
+	&=\sum_{k=0}^nkP_n(k)\\
+	&=\sum_{k=1}^nk\binom{n}{k}p^k(1-p)^{n-k}\\
+	&=\sum_{k=1}^nk\frac{n(n-1)!}{k(k-1)!(n-k)!} p^k(1-p)^{n-k}\\
+	&=\sum_{k=1}^nn\binom{n-1}{k-1}p^k(1-p)^{(n-1)-(k-1)}\\
+	&=np\sum_{k=1}^n\binom{n-1}{k-1}p^{k-1}(1-p)^{(n-1)-(k-1)}\\
+	&=np\sum_{k=0}^{n-1}\binom{n-1}{k}p^{k}(1-p)^{(n-1)-k}\\
+	&=np\sum_{k=0}^{m}\binom{m}{k}p^{k}(1-p)^{m-k}\qquad\text{mit }m:=n-1\\
+	&=np\cdot (p+(1-p))^m\\
+	&=np.
+\end{align*}
+
+\item Uniformverteilung auf $ [a,b]\subset \mathbb{R} $: \begin{align*}
+\mathbb{E}(X)=\frac{1}{b-a}\int_a^bx\ \mathrm{d}x=\left.\frac{x^2}{2(b-a)}\right|_a^b=\frac{b^2-a^2}{2(b-a)}=\frac{b+a}{2}.
+\end{align*}
+
+\item Normalverteilung: \begin{align*}
+\mathbb{E}(X)
+	&=\frac{1}{\sigma\sqrt{2\pi}}\int_{-\infty}^\infty x\cdot e^{\frac{-(x-a)^2}{\sigma^2}}\ \mathrm{d}x
+\end{align*}
+Sei $ x'=\frac{x-a}{\sigma} $, dann folgt $ x=x'\sigma+a $ und $ \mathrm{d}x=\sigma\ \mathrm{d}x' $. Daraus folgt \begin{align*}
+\mathbb{E}(X)
+	&=\frac{\sigma}{\sigma\sqrt{2\pi}}\int_{-\infty}^\infty(\sigma x'+a)e^{-\frac{x'^2}{2}}\ \mathrm{d}x'\\
+	&=\frac{a}{\sqrt{2\pi}}\int_{-\infty}^\infty e^{-\frac{x'^2}{2}}\ \mathrm{d}x'\\
+	&=a.
+\end{align*}
+\end{itemize}
+
+\paragraph{Varianz (Dispersion):}
+\begin{align*}
+V(X):=\mathbb{E}[(X-\mathbb{E}(X))^2]=\mathbb{E}(X^2)-\mathbb{E}(X)^2
+\end{align*}
+Im diskreten Fall ist \begin{align*}
+V(X)=\sum_{i}[x_i-\mathbb{E}(X)]^2\cdot p_i.
+\end{align*}
+
+\paragraph{Beispiele:} 
+\begin{itemize}
+\item Man betrachte den Wurf eines Würfels. \begin{align*}
+V(X)=\frac{1}{6}\sum_{i=1}^6(i-3.5)^2=\frac{1}{3}\sum_{i=1}^3\left(i-\frac{7}{2}\right)^2=\frac{35}{12}
+\end{align*}
+
+Im stetigen Fall berechnet man die Varianz durch \begin{align*}
+V(X)=\int_{-\infty}^{\infty} (x-\mathbb{E}(x))^2\cdot p(x)\ \mathrm{d}x=\int_{-\infty}^{\infty} x^2\cdot p(x)\ \mathrm{d}x-\mathbb{E}(X)^2.
+\end{align*}
+
+\item Uniformverteiung auf $ [a,b] $\begin{align*}
+V(X)=\frac{1}{b-a}\int_{a}^{b} x^2\ \mathrm{d}x-\left(\frac{a+b}{2}\right)^2=\frac{(b-a)^2}{12}
+\end{align*}
+\end{itemize}
+
+\begin{defi}[Moment]
+Wir bezeichnen $ m_k $ als das \emph{gewöhnliche Moment (Anfangsmoment)} $ k $-ter Ordnung, \begin{align*}
+m_k:=\mathbb{E}(X^k).
+\end{align*}
+Das \emph{zentrale Moment} (auf Zentrum von $ \mathbb{E}(X) $ bezogen) $ k $-ter Ordnung ist  \begin{align*}
+\mu_k:=\mathbb{E}[(X-m)^k].
+\end{align*}
+\end{defi}\par\bigskip
+
+Die Varianz ist also das zweite Zentralmoment, $ V(X)=\mu_2=\mathbb{E}(X^2-2m_1X+m_1^2)=m_2-m_1^2 $. Man kann $ \mu_k $ immer durch $ m_l\ (l\leq k) $ ausdrücken.
+
+\subsection{Korrelation}
+Eine Erweiterung dieser Momente stellt die sogenannte Kovarianz \begin{align*}
+b(X,Y)=\mathbb{E}[(X-\mathbb{E}(X))\cdot(Y-\mathbb{E}(Y))]
+\end{align*}
+dar. Diese wird als gemischtes Zentralmoment 2-ter Ordnung bezeichnet. Es gilt offensichtlich $ b(X,X)=V(X) $. Die normierte Größe \begin{align*}
+\varrho(X,Y) :=\frac{b(X,Y)}{\sqrt{V(X)\cdot V(Y)}}
+\end{align*}
+bezeichnet man als \emph{Korrelationskoeffizient}. Dieser hat folgende Eigenschaften:
+\begin{itemize}
+\item $ -1\leq \varrho\leq 1 $
+\item $ X=Y\implies \varrho=1 $ und $ X=-Y\implies \varrho=-1 $
+\item $ X,Y $ unabhängig $ \implies \varrho=0 $
+\end{itemize}
+Wir betrachten nun eine Anwendung auf Wahrscheinlichkeiten. Seien $ \mathbb{E}(X)=p_x $ und $ V(X)=p_x(1-p_x) $. Dann folgt \begin{align*}
+\varrho_{xy}=\frac{p_{xy}-p_xp_y}{\sqrt{p_x(1-p_x)p_y(1-p_y)}}.
+\end{align*}
+Damit folgt \begin{align*}
+p_{xy}=p_xp_y+\varrho\sqrt{p_x(1-p_x)p_y(1-p_y)}.
+\end{align*}
+
+\subsection{Wichtige Gesetze der Wahrscheinlichkeitstheorie}
+
+\subsubsection{Gesetz der großen Zahlen}
+Man betrachte einen Bernoulli-Versuch. Sei $ \mu $ die Anzahl der Ereignisse und $ n $ die Anzahl der Versuche und $ p $ die Eintrittswahrscheinlichkeit der Ereignisse. Für alle $ \varepsilon>0 $ gilt dann \begin{align*}
+\lim_{n\to\infty}P\left(\left\lbrace \left|\frac{\mu}{n}-p\right|<\varepsilon\right\rbrace\right)=1.
+\end{align*}
+Im allgemeinen Fall sei $ X=(X_1,\ldots,X_n)^\top_n $ eine Folge unabhängig und identisch verteilter Zufallsvariablen mit $ \mathbb{E}(X_1)<\infty $ und $ \mathrm{Var}(X_1)<\infty $. Dann gilt für alle $ \varepsilon>0 $ \begin{align*}
+\lim_{n\to\infty}P\left(\left\lbrace\left|\frac{1}{n}\sum_{i=1}^{n} X_i-\mathbb{E}(X_1)\right|<\varepsilon\right\rbrace\right)=1.
+\end{align*}
+Nach Tschebyschew sei $ X=(X_1,\ldots,X_n)^\top_n $ eine Folge von paarweise unabhängigen Zufallsvariablen mit gleichmäßig beschränkter Varianz. Es gilt also $ \mathrm{Var}(X_i)\leq C $ für $ C\in\mathbb{R}_+ $ und $ i\in\{1,\ldots,n\}_n $. Dann gilt für alle $ \varepsilon>0 $ \begin{align*}
+\lim_{n\to \infty} P\left(\left\lbrace\left|\frac{1}{n}\sum_{i=1}^{n} X_i-\frac{1}{n}\sum_{i=1}^{n} \mathbb{E}(X_i)\right|<\varepsilon\right\rbrace\right)=1.
+\end{align*}
+
+\subsubsection{Zentraler Grenzwertsatz (CLT)}
+Wir betrachten zunächst den \emph{Lokalen Grenzwertsatz von Moivre-Laplace}. Sei $ 0<p<1 $ die Eintrittswahrscheinlichkeit eines Ereignisses. In $ n $ Versuchen gilt \begin{align*}
+P_n(m)=\binom{n}{m}p^m(1-p)^{n-m}.
+\end{align*}
+Dann gilt für $ x=\frac{m-\mu}{\sigma}=\frac{m-np}{\sqrt{np(1-p)}} $:\begin{align*}
+\lim_{n\to \infty} \frac{\sqrt{np(1-p)}}{\frac{1}{\sqrt{2\pi}}\cdot e^{-\frac{x^2}{2}}}=1.
+\end{align*}
+Im allgemeinen Fall betrachten wir eine Folge $ X=(X_1,\ldots,X_n)^\top_n $ von identisch verteilten Zufallsvariablen  mit $ \mathbb{E}(X_1)<\infty $ und $ \mathrm{Var}(X_1)=\sigma^2<\infty $. Sei nun $ S_n:=\sum_{i=1}^{n} X_i $, dann gilt \begin{align*}
+\lim_{n\to \infty} P\left(\left\lbrace\frac{S_n-n\mathbb{E}(X_1)}{\sqrt{n}\sigma}<t\right\rbrace\right)=\lim_{n\to \infty} P\left(\left\lbrace\sqrt{n}\cdot\frac{\frac{1}{n} S_n-\mathbb{E}(X_1)}{\sigma}<t\right\rbrace\right)=\frac{1}{\sqrt{2\pi}}\int_{-\infty}^{t} e^{-\frac{x^2}{2}}\ \mathrm{d}x.
+\end{align*}
+
+\newpage
+\section{Deskriptive Statistiken}
+Die Beschreibung von Daten und Kohorten ist zentral für das Verständnis einer Arbeit. Ziel ist es, mit wenigen Kenngrößen das Wesentliche zu charakterisieren.
+
+\subsection{Einzelne Merkmale}
+\subsubsection{Nominale und ordinale Größen}
+\begin{itemize}
+\item absolute und relative Häufigkeiten (siehe Häufigkeitstabellen)
+\item grafisch 
+\begin{itemize}
+\item Balkendiagramme (mit Konfidenzintervall oder Standardfehler)
+\item Kreisdiagramme (unüblich und wenig geeignet)
+\end{itemize}
+\end{itemize}
+
+\paragraph{Beispiel (Fehlgeburtsraten):}
+Man betrachte eine Kontrollgruppe und gewisse Fälle (z.B. Medikamenteneinnahme während der Schwangerschaft). Die Fehlgeburtsrate kann man schätzen durch \begin{align*}
+\hat{p}=\frac{r}{n}
+\end{align*}
+für $ r $ als Anzahl der Fehlgeburten und $ n $ als Gesamtzahl der Geburten. Daraus folgt \begin{align*}
+\mathrm{SE}(\hat{p})=\sqrt{\frac{\hat{p}(a-\hat{p})}{n}}.
+\end{align*}
+Damit ergibt sich das Konfidenzintervall $ \mathrm{KI}=\hat{p}\pm2\mathrm{SE} $.\par\bigskip
+
+\begin{defi}[Konfidenzintervall]
+Seien $ \theta $ ein zu schätzender Parameter und $ \hat{\theta} $ ein Schätzer für $ \theta $. Dann definiert man ein $ (1-\alpha) $--Konfidenzintervall für $ \theta $, sodass gilt: \begin{align*}
+P(a<\theta<b)=1-\alpha.
+\end{align*}
+Das heißt, dass das Intervall $ [a,b] $ ein $ (1-\alpha) $--Konfidenzintervall für $ \theta $ ist.
+\end{defi}
+
+\paragraph{Interpretation:}
+$ \theta $ wird durch $ \hat{\theta} $ geschätzt. Ein $ 95\% $--Konfidenzintervall wird durch wiederholte Konstruktion von Konfidenzintervallen bestimmt, von denen im $ 95\% $ den tatsächlichen Wert $ \theta $ enthalten.
+
+Hier Grafik
+
+\paragraph{Beispiel (durchschnittliche Körpergröße):}
+Sei $ \theta $ die zu schätzende durchschnittliche Körpergröße von Frauen in Deutschland und $ \hat{\theta} $ ein entsprechender Schätzer auf Grundlage einer Stichprobe. Bei kleinen Stichproben wird das Konfidenzintervall unter Umständen sehr groß. Beispielsweise könnte eine Stichprobe folgende Ergebnisse liefern: \begin{itemize}
+\item $ \hat{\theta}=1.68m $
+\item $ 95\% $--KI$ (\hat{\theta})=[1.50;1.79] $
+\end{itemize}
+Bei größeren Stichproben wird das Konfidenzintervall üblicherweise schmaler und es könnten folgende Ergebnisse vorliegen: \begin{itemize}
+\item $ \hat{\theta}=1.69m $
+\item $ 95\% $--KI$ (\hat{\theta})=[1.63;1.72] $
+\end{itemize}
+
+\subsubsection{Metrische Daten}
+\begin{itemize}
+\item Lagemaße:
+\begin{itemize}
+\item Mittelwert
+\item Quantile (insb. Median)
+\end{itemize}
+\item Streumaße:
+\begin{itemize}
+\item Standardabweichung (empirisch)
+\item Interquartilabstand (IQR): $ |(75\%$--Quantil)$-(25\%$--Quantil)$| $
+\item Spannweite (Range): $ |\mathrm{Max}-\mathrm{Min}| $
+\end{itemize}
+\item Grafiken
+\begin{itemize}
+\item Histogramme
+\item Fehlerbalken
+\item Boxplot
+\end{itemize}
+\end{itemize}
+
+\paragraph{Übersicht von molekularbiologischen Hochdurchsatzverfahren:}
+\begin{itemize}
+\item Genom (SNPs)
+\item Epigenom
+\item Transkryptom
+\item Metabelom
+\item Proteom
+\end{itemize}
+
+\paragraph{Mögliche Fragestellungen:}
+\begin{enumerate}
+\item Welchen Einfluss/Effekt hat die Gabe eines bestimmten Medikaments $ X $ auf die Expression eines Gens $ Y_i $?
+\item Gibt es Unterschiede in der Expressionsrate von Gen $ Y_i $ zwischen gesunden Probanden und erkrankten Probanden?
+\item Wie stark ist der Effekt/Unterschied?
+\end{enumerate}
+
+\subsection{Zusammenhang zweier Merkmale}
+
+\paragraph{Nominale Zusammenhänge:}
+\begin{itemize}
+\item Kontigenztafel
+\begin{itemize}
+\item odds ratio
+\item relatives Risiko
+\end{itemize}
+
+\item grafisch: Forest plot % Bildchen
+\end{itemize}
+
+\paragraph{Metrische Zusammenhänge:}
+\begin{itemize}
+\item Korrelationskoeffizient (mit KI)
+\item Streudiagramm
+\end{itemize}
+
+\paragraph{Beispiel (Simpson Paradoxon):} 
+Durch das Simpson Paradoxon kann verdeutlicht werden, dass ein Effekt, der in der Gesamtgruppe beobachtet wird, in Subgruppen anders ausfallen kann. Man betrachte beispielsweise zwei Gruppen $ A,B $ von Fahrschulprüflingen und deren Erfolg bzw. Misserfolg in der Prüfung: 
+
+\begin{figure}[h]
+\centering
+\begin{tabular}{lrr}
+Gruppe & $ A $ & $ B $ \\ 
+\midrule
+Erfolg & 70 & 50 \\ 
+Misserfolg & 160 & 182 \\ 
+\midrule
+Gesamt & 230 & 232 \\ 
+\end{tabular} 
+\end{figure}
+
+Hiernach könnte man folgern, dass Schüler in Gruppe $ A $ mehr Erfolg hatten als Schüler in Gruppe $ B $. Unterteilt man die Gruppen jedoch nach Geschlecht, so lässt sich dieser Effekt unter gewissen Umständen nicht auf alle Teilgruppen verallgemeinern: 
+
+\begin{figure}[h]
+\centering
+\begin{tabular}{llrr}
+ & Gruppe & $ A $ & $ B $ \\ 
+\midrule
+M & Erfolg & 7 & 45 \\ 
+ & Misserfolg & 28 & 172 \\ 
+\midrule
+W & Erfolg & 63 & 5 \\ 
+ & Misserfolg & 132 & 10 \\ 
+\midrule
+ & Gesamt & 230 & 232 \\ 
+\end{tabular} 
+\end{figure}
+
+\newpage
+\section{Statistisches Testen}
+
+\subsection{Die Logik des Testens}
+Die Logik des Testens weist eine gewisse Analogie zum Beweis durch Widerspruch auf, die man häufig nutzen kann. Beispielsweise könnte man sich fragen, was der Zusammenhang zwischen dem Testergebnis und der Wahrheit der Nullhypothese ist und folgende Überlegungen anstellen: 
+
+\begin{figure}[h]
+\centering
+\begin{tabular}{p{2cm}p{5cm}p{5cm}}
+& \textbf{Statistisches Testen} & \textbf{Beweis durch Widerspruch}\\
+\midrule
+Annahme\cellcolor{hsrmRedDark!10} & $ H_0 $: $ \mu_1=\mu_2 $ bzw. der Mittelwert der Gruppe 1 entspricht dem Mittelwert der Gruppe 2. Es wird vermutet, dass dies falsch ist.\cellcolor{hsrmRedDark!10} & $ \sqrt{2} $ ist rational. Es wird vermutet, dass dies falsch ist.\cellcolor{hsrmRedDark!10}\\
+Folge & Man nimmt an, dass die Annahme doch stimmt. & Man nimmt an, dass die Annahme doch stimmt.\\
+Ergebnis a)\cellcolor{hsrmRedDark!10} & Ist das das Ergebnis sehr unwahrscheinlich, so ist die Annahme nicht plausibel (Korrelation $< 5\% $, $ H_0 $ wird abgelehnt).\cellcolor{hsrmRedDark!10} & Kommt man auf einen Widerspruch, so muss die Annahmen falsch sein.\cellcolor{hsrmRedDark!10}\\
+Ergebnis b) & Ist das Ergebnis plausibel, weiß man wenig über die Annahme, ein Konfidenzintervall kann jedoch weiterhelfen. & Kommt man auf keinen Widerspruch erhält man geringe Informationen über die Annahme.
+\end{tabular}
+\end{figure}
+
+\paragraph{Fehlertypen bei Hypothesentests:}~
+\begin{figure}[h]
+\centering
+\begin{tabular}{p{4cm}p{4cm}p{4cm}}
+ & $ H_0 $ stimmt & $ H_0 $ stimmt nicht\\
+\midrule
+$ H_0 $ abgelehnt & Typ-I-Fehler $ \alpha $ \cellcolor{hsrmRedDark!10} & Power: $ 1-\beta $\\
+ & (Korrela\-$  $tion $ \alpha\leq 0.05 $) \cellcolor{hsrmRedDark!10} & \\
+$ H_0 $ nicht abgelehnt & kein Fehler & Typ-II-Fehler $ \beta $\cellcolor{hsrmRedDark!10}\\
+ & & (Planung: $ \beta=0.1 $)\cellcolor{hsrmRedDark!10}\\
+\end{tabular}
+\end{figure}
+
+\subsection{Der T-Test}
+Beim $ T $-Test werden zwei Mittelwerte verglichen. Die Nullhypothese lautet $ H_0:\mu_1=\mu_2 $. Unter der Annahme gleicher Varianz schätzt man die sogenannte $ t $-Statistik durch \begin{align*}
+T=\frac{\bar{x}_1-\bar{x}_2}{s\sqrt{\frac{1}{n_1^2}+\frac{1}{n_2^2}}},
+\end{align*}
+wobei \begin{align*}
+s^2=\frac{(n_1-1)s_1^2+(n_2-1)s_2^2}{n_1+n_2-2}.
+\end{align*}
+Dabei bezeichne $ n_i $ die Stichprobengröße der $ i $-ten Gruppe und $ \bar{x}_i $ den Mittelwert dieser Gruppe. Die grundlegende Struktur der $ t $-Statistik ist $ T=\frac{\Delta x}{\mathrm{SE}} $. Unter der Annahme, dass $ H_0 $ stimmt, hat $ T $ eine $ t $-Verteilung mit $ f=n_1+n_2-2 $ Freiheitsgraden.
+
+\paragraph{Welch-Test:} Im Gegensatz zum normalen $ T $-Test ist der Welch-Test eine Variante, die keine Annahme über die Gleichheit der Varianzen macht. In diesem Fall betrachtet man: \begin{align*}
+T&=\frac{\bar{x}_1-\bar{x}_2}{\sqrt{\frac{1}{n_1^2}+\frac{1}{n_2^2}}},\\
+f&=\frac{(\tilde{s}_1^2+\tilde{s}_2^2)^2}{\frac{\tilde{s}_1^4}{n_1-1}+\frac{\tilde{s}_2^4}{n_2-1}},\\
+\tilde{s}_i&=\frac{s_i}{n_i}.
+\end{align*}
+Man kann dann ein Konfidenzintervall für $ \Delta\mu $ bestimmen: \begin{align*}
+\mathrm{KI}=\Delta\bar{x}\pm \underbrace{t_{\nicefrac{\alpha}{2},f}}_{\approx2\text{ für }\alpha=0.05}\mathrm{SE}.
+\end{align*}
+Weiter bezeichnet man als $ p $-Wert die Wahrscheinlichkeit, den Wert $ T $ zu beobachten unter der Annahme, dass $ H_0 $ stimmt.
+
+\subsection{Kontingenztafel}
+Kontingenztafeln sind Tabellen, die die absoluten oder relativen Häufigkeiten (Häufigkeitstabellen) von Kombinationen bestimmter Merkmalsausprägungen enthalten. Kontingenz hat dabei die Bedeutung des gemeinsamen Auftretens von zwei Merkmalen. Das bedeutet, es werden Häufigkeiten für mehrere miteinander durch \glqq und\grqq\ oder \glqq sowie\grqq\ (Konjunktion) verknüpfte Merkmale dargestellt. Diese Häufigkeiten werden ergänzt durch deren Randsummen, die die sogenannten Randhäufigkeiten bilden. Der häufige Spezialfall einer Kontingenztabelle mit zwei Merkmalen ist eine Konfusionsmatrix. 
+
+\paragraph{Beispiel (Odds Ratios):} Gegeben sei die folgende Kontingenztafel:$  $
+\begin{figure}[h]
+\centering
+\begin{tabular}{llll}
+ & $ A $ & $ B $ & Randhäufigkeit\\
+ \midrule
+$ I $ & $ n_{11} $\cellcolor{hsrmRedDark!10} & $ n_{12} $\cellcolor{hsrmRedDark!10} & $ n_{1\bullet} $\\
+\textit{II} & $ n_{21} $\cellcolor{hsrmRedDark!10} & $ n_{22} $\cellcolor{hsrmRedDark!10} & $ n_{2\bullet} $\\
+\midrule
+Randhäufigkeit & $ n_{\bullet 1} $ & $ n_{\bullet 2} $ & $ n_{\bullet\bullet} $\cellcolor{hsrmRedDark!10}\\
+\end{tabular}
+\end{figure}
+
+In diesem Beispiel schätzt $ \frac{n_{11}}{n_{21}} $ die Odds von $ I $ im Vergleich zu \textit{II} bei Gruppe $ A $. Das Odds Ratio ist gegeben durch \begin{align*}
+\widehat{\mathrm{OR}}=\frac{\frac{n_{11}}{n_{21}}}{\frac{n_{22}}{n_{12}}}.
+\end{align*}
+Weiter erhält man das Konfidenzintervall \begin{align*}
+\mathrm{KI}=\widehat{\mathrm{OR}}\cdot e^{z_{\nicefrac{\alpha}{2}}\cdot\mathrm{SE}},
+\end{align*} 
+wobei \begin{align*}
+\mathrm{SE}=\sqrt{\frac{1}{n_{11}}+\frac{1}{n_{12}}+\frac{1}{n_{21}}+\frac{1}{n_{22}}}.
+\end{align*}  
+Hier stellt sich die Frage, ob 1 in dem Intervall liegt, da kein Unterschied zwischen $ A $ und $ B $ existiert, wenn $ \widehat{\mathrm{OR}}=1 $.
+
+\paragraph{Fisher-Test:}
+Der Fisher-Test ist ein exakter Test, da ein genauer Wert aus der Kombinatorik berechnet werden kann gemäß \begin{align*}
+P=\frac{\binom{n_{1\bullet}}{n_{11}}\binom{n_{2\bullet}}{n_{22}}}{\binom{n_{\bullet\bullet}}{n_{\bullet 1}}}.
+\end{align*}
+Der Zusammenhang kann mit hoher \glqq Power\grqq\ mit dem Chi-Quadrat-Test getesten werden. Bezeichne $ e_{ij} $ die erwartete Anzahl \begin{align*}
+e_{ij}=\frac{n_{i\bullet}n_{\bullet i}}{n_{\bullet\bullet}}
+\end{align*}
+und betrachte \begin{align*}
+\chi^2=\sum_{i,j} \frac{(n_{ij}-e_{ij})^2}{e_{ij}}.
+\end{align*}
+$ \chi^2 $ hat eine $ \chi^2_f $-Verteilung mit $ f=(l-1)(m-1) $ Freiheitsgraden für $ i=1,\ldots,l $ und $ j=1,\ldots,m $. Als Faustregel gilt, wenn $ n_{ij}\neq 0 $ für alle $ i,j $ gilt und $<25\% $ der Zellen haben $ l_{ij}<5 $, dann kann der $ \chi^2 $-Test angewandt werden.
+
+\newpage
+\section{Statistische Modelle}
+
+\begin{defi}[Statistisches Modell]
+Ein statistisches Modell stellt eine Zufallsvariable $ Y $ in Beziehung zu einem oder mehreren Kovariablen: \begin{align*}
+Y=f(X)+\varepsilon
+\end{align*}
+\end{defi}
+
+\paragraph{Bezeichnungen:}~
+
+\begin{figure}[h]
+\centering
+\begin{tabular}{ll}
+Variable & Beschreibung \\ 
+\midrule
+$ Y $ & abhängige Zufallsvariable \\ 
+$ X $ & Kovariaten, unabhängige Variablen \\ 
+$ f(X) $ & unbekannte Funktion, die den systematischen Effekt von $ X $ auf $ Y $ modelliert \\ 
+$ \varepsilon $ & zufälliger Fehler, \\
+ & gibt den Anteil von $ Y $ an, der nicht durch $ f(X) $ erklärt werden kann \\ 
+\end{tabular} 
+\end{figure}
+
+\paragraph{Anwendungen von statistischen Modellen:}
+\begin{itemize}
+\item Inferenz:
+\begin{itemize}
+\item Ziel ist es, die Art des Zusammenhangs zwischen $ Y $ und $ X $ zu verstehen. Es ist also von Interesse, die Form von $ f(X) $ zu kennen.
+\end{itemize}
+
+\item Vorhersage:
+\begin{itemize}
+\item Ziel ist es, den Wert von $ Y $ so genau wie möglich vorherzusagen. Hier ist es nicht von Interesse, die exakte Form von $ f(X) $ zu kennen.
+\end{itemize}
+\end{itemize}
+
+\paragraph{Schätzen der Funktion:}
+Die Funktion $ f(X) $ wird mittels einer statistischen Lernmethode anhand einer Menge von Traningsdaten  geschätzt. Die geschätzte Funktion wird mit $ \hat{f}(X) $ gekennzeichnet. Die Trainingsdaten liegen üblicherweise (beim überwachten Lernen) in der Form \begin{align*}
+(X,Y)=\{(x_1,y_1),\ldots,(x_n,y_n)\}
+\end{align*}
+vor, wobei $ n $ die Anzahl der Messungen/Beobachtungen bezeichne.
+
+\subsection{Klassifikation von statistischen Lernmethoden}
+
+\subsubsection{Parametrische Methoden}
+\paragraph{Modellwahl:}
+Für $ f(X) $ wird eine bestimmte Form angenommen und oft wird die Anzahl der Kovariablen schon vorher festgelegt. Verfahren zur Modellselektion legen die Wahl der Kovariablen fest.
+
+\paragraph{Training des Modells:}
+Es werden die Gewichte der Kovariablen anhand der vorhandenen Trainingsdaten geschätzt.
+
+\paragraph{Fazit:}
+\begin{itemize}
+\item Modelle sind weniger flexibel, können daher oft besser interpretiert werden.
+\item Gewähltes Modell entspricht oft nicht der wahren Form von $ f(X) $.
+\item Da nur Parameter gelernt werden, ist eine geringere Stichprobengröße ausreichend.
+\end{itemize}
+
+\subsubsection{Nichtparametrische Modelle}
+Es wird keine bestimmte Form von $ f(X) $ festgelegt. Es werden die Form und die Parameter einer beliebig komplexen Funktion $ f(X) $ anhand der Trainingsdaten geschätzt.
+\begin{itemize}
+\item Modelle sind sehr flexibel, aber oft weniger gut interpretierbar.
+\item Form von $ f(X) $ wird anhand der Trainingsdaten gelernt.
+\item Oftmals eine größere Stichprobengröße notwendig.
+\end{itemize}
+
+\subsection{Lineare Regression}
+Die Lineare Regression gehört zu den linearen statistischen Modellen. Als Form von $ f(X) $ wird ein annähernd linearer Zusammenhang zwischen $ X $ und $ Y $ angenommen. Dabei nimmt die Zufallsvariable $ Y $ quantitative Werte an und die Kovariablen $ X $ können qualitative oder quantitative Werte annehmen.
+
+\subsubsection{Univariate lineare Regression}
+\begin{defi}[Univariate lineare Regression]
+Die univariate lineare Regression ist ein statistisches Modell, das den Wert der Zielvariablen $ Y $ auf Basis der Werte einer einzigen Kovariablen $ X $ unter Annahme eines annähernd linearen Zusammenhangs vorhersagt: 
+\begin{align*}
+Y=\beta_0+\beta_1X+\varepsilon.
+\end{align*}
+\end{defi}
+
+\paragraph{Bezeichnungen:}~
+
+\begin{figure}[h]
+\centering
+\begin{tabular}{ll}
+Variable & Beschreibung \\ 
+\midrule
+$ \beta_0 $ & Mittelwert von $ Y $, falls es keine Zusammenhang zwischen $ Y $ und $ X $ gibt. \\
+ & Sonst ist $ \beta_0 $ der Schnittpunkt mit der $ y $-Achse. \\ 
+$ \beta_1 $ & Regressionskoeffizient,\\
+ & Effekt der Kovariablen $ X $ auf $ Y $,\\
+ & mittlerer Anstieg in $ Y $, wenn sich $ X $ um eine Einheit ändert \\ 
+$ \varepsilon $ & normalverteilter Fehler $ \varepsilon\sim N(0,\sigma^2) $ \\ 
+\end{tabular} 
+\end{figure}
+
+
+
+\paragraph{Annahmen über den zufälligen Fehler:}
+\begin{itemize}
+\item Alle Störungen haben die gleiche Varianz $ \mathrm{Var}(\varepsilon_i)=\sigma^2 $ (Homoskedastizität).
+
+\item Alle Störungen sind um 0 verteilt (zentriert) bzw. $ \mathbb{E}(\varepsilon_i)=0 $.
+
+\item Störgrößen sind unabhängig voneinander: $ \mathrm{Cor}(\varepsilon_i,\varepsilon_j)=0 $.
+\end{itemize}
+
+% Bildchen
+
+\paragraph{Varianzdekomposition:} \begin{align*}
+\begin{matrix}
+\displaystyle\sum_{i=1}^n (y_i-\bar{y})^2&=&\displaystyle\sum_{i=1}^{n} (\hat{y}_i-\bar{y})^2&+&\displaystyle\sum_{i=1}^{n} (\hat{y}_i-y_i)^2\\
+\underbrace{\textit{Total sum of squares}}_{\mathrm{TSS}}&=&\underbrace{\textit{Explained sum of squares}}_{\mathrm{ESS}}&+&\underbrace{\textit{Residual sum of squares}}_{\mathrm{RSS}}
+\end{matrix}
+\end{align*}
+
+\paragraph{Schätzen der Parameter (Methode der kleinsten Quadrate):}
+Bei der Methode der kleinsten Quadrate möchte man die Differenz zwischen den Werten der Zufallsvariablen $ Y_i $ und den geschätzten bzw. vorhergesagten Werten $ \hat{y}_i $ für alle Beobachtungen reduzieren:
+\begin{align*}
+\mathrm{RSS}=\sum_{i=1}^{n} (y_i-\hat{y}_i)^2=\sum_{i=1}^{n} (y_i-\hat{\beta}_0-\hat{\beta}_1x_i)^2\quad\longrightarrow\quad\mathrm{min}.
+\end{align*}
+Durch Bilden der ersten partiellen Ableitung und Null setzen erhält man folgende explizite Lösungs\-vorschriften: \begin{align*}
+\hat{\beta}_0&=\bar{y}-\hat{\beta}_1\bar{x},\\
+\hat{\beta}_1&=\frac{\sum_{i=1}^{n} (x_i-\bar{x})(y_i-\bar{y})}{\sum_{i=1}^{n} (x_i-\bar{x})^2}=\frac{\mathrm{Cor}(X,Y)}{\mathrm{Var}(X)}.
+\end{align*}
+
+\paragraph{Güte der Schätzungen:}
+Der wahre Zusammenhang zwischen $ Y $ und $ X $ ist unbekannt. Das heißt, die wahre Regressionsgerade ist unbekannt, da die Schätzungen $ \hat{\beta}_0,\hat{\beta}_1 $ von dem gewählten Trainingsdatensatz abhängen. Folglich schwanken die trainierten Regressionsgeraden um die die wahre Regressionsgerade. Die Koeffizienten $ \beta_i $ sind Zufallsvariablen, welche auf Basis von Beobachtungen (Stichprobe) geschätzt werden. Es gelten \begin{align*}
+\mathrm{Var}(\beta_1)&=\frac{\delta_\varepsilon^2}{\sum_{i=1}^{n} (x_i-\bar{x})^2},\\
+\mathrm{Var}(\beta_0)&=\frac{\delta_\varepsilon^2\sum_{i=1}^{n} x_i^2}{n\sum_{i=1}^{n} (x_i-\bar{x})^2},
+\end{align*}
+wobei $ \delta_\varepsilon^2 $ die Varianz der Residuen ist.
+
+\paragraph{Bestimmtheitsmaß:}
+Das Bestimmtheitsmaß $ R^2 $ gibt an, wie gut die Schätzung der beobachteten Daten anhand der trainierten Regressionsgerade ist. Eine Schätzung ist dann besonders gut, wenn in der Varianzdekomposition der Anteil von RSS an TSS klein ist und ESS möglichst groß ist. Daraus gewinnt man das Bestimmtheitmaß \begin{align*}
+R^2=\frac{\mathrm{TSS}-\mathrm{RSS}}{\mathrm{TSS}}=1-\frac{\mathrm{RSS}}{\mathrm{TSS}}.
+\end{align*}
+Offensichtlich gilt $ 0\leq R^2\leq 1 $. Ist $ R^2\approx1 $, so kann ein großer Anteil der Variabilität, die wir in der Zielvariablen beobachten, durch die trainierte Regressionsgerade erklärt werden.
+
+\paragraph{Testen auf Zusammenhang:}
+Es stellt sich die Frage, ob ein linearer Zusammenhang $ Y=\beta_0+\beta_1X+\varepsilon $ zwischen $ Y $ und $ X $ besteht. Zur Beantwortung kann man einen $ t $-Test nutzen. Die passende Nullhypothese $ H_0 $ behauptet, dass kein Zusammenhang existiert ($ \beta_1=0 $), während die Alternativhypothese $ H_1 $ behauptet, dass ein Zusammenhang existiert ($ \beta_1\neq 0 $). Es ist dann \begin{align*}
+T=\frac{\hat{\beta_1}}{\mathrm{SD}\sqrt{\hat{\beta}_1}}\sim A_{1-\nicefrac{\alpha}{2},n-2}.
+\end{align*}
+Dabei gilt \begin{align*}
+\mathrm{SD}(\hat{\beta}_1)=\sqrt{\mathrm{Var}(\beta_1)}=\sqrt{\frac{\frac{\mathrm{RSS}}{n-2}}{\mathrm{Var}(X)}}.
+\end{align*}
+
+\subsubsection{Multivariate lineare Regressionsmodelle}
+Die multivariate lineare Regression ist die Erweiterung der univariaten Regression auf mehrere Variablen $ X=\{X_1,\ldots,X_p\} $.
+
+\paragraph{Ziele:}
+\begin{itemize}
+\item Identifiziere ein verbessertes Modell, als es auf Basis einer einzigen Variable möglich ist.
+\item Modelliere den individuellen Effekt einer Variable $ X_j $ über den Effekt aller anderen gegebenen Kovariablen hinaus.
+\end{itemize}
+
+Individuelle Effekte von Kovariablen $ X_j $ können durch spezifische Regressionsgeraden modelliert werden. Jede partielle Regressionsgerade modelliert den Effekt von $ X_j $, während alle anderen Kovariablen $ X_i $ für $ i\neq j $ ihren enstprechenden Mittelwert annehmen.
+
+\paragraph{Fragen:}
+\begin{itemize}
+\item Hat mindestens eine der Kovariablen einen Effekt auf $ Y $?
+\item Welche der Kovariablen hat einen Effekt auf $ Y $?
+\item Wie gut entspricht das gefittete Modell den Daten?
+\end{itemize}
+
+\paragraph{Additives Modell:}
+Beim additiven Modell nimmt man an, dass der Effekt einer Kovariablen $ X_j $ auf $ Y $ unabhängig von allen anderen Kovariablen ist: \begin{align*}
+Y=\beta_0+\beta_1X_1+\beta_2X_2+\ldots+\beta_pX_p+\varepsilon.
+\end{align*}
+Dabei gelten folgende Bezeichnungen: 
+
+\begin{figure}[h]
+\centering
+\begin{tabular}{p{2cm}p{10cm}}
+Variable & Beschreibung\\
+\midrule
+$ \beta_1,\ldots,\beta_p $ & Effekt der Kovariablen $ X_j $ für $ 1\leq j\leq p $ auf $ Y $, wenn alle Koeffizienten $ \beta_i $ für $ i\neq j $ konstant gehalten werden.\\
+$ k $ & Anzahl der Kovariablen\\
+$ x_i^{(j)} $ & Wert der Kovariablen $ j $ für Individuen $ i $\\
+$ \varepsilon_i $ & zufällige Störung (häufig: $ \varepsilon_i\sim N(0,\sigma^2),\ \sigma^2>0,\ i\in\{1,\ldots,n\} $, unabhängig)\\
+$ \beta_j $ & unbekannte, wahre Parameter\\
+\end{tabular}
+\end{figure}
+
+\paragraph{Multiplikatives Modell:} Im multiplikativen Modell wird angenommen, dass Interaktionen zwischen den Kovariablen möglich sind. Sei \begin{align*}
+Y=\beta_0+\beta_1X_1+\beta_2X_2+\beta_3X_1X_2+\ldots+\beta_{p+1}X_p
+\end{align*}
+ein multiplikatives Modell, dann gibt $ \beta_3 $ an, inwieweit $ X_1 $ von $ X_2 $ abhängt.
+
+\paragraph{Schätzen der Koeffizienten:}
+Über die Methode der kleinsten Quadrate kann man Schätzer $ \hat{\beta}_1,\ldots,\hat{\beta}_p $ für die Koeffizienten $ \beta_1,\ldots,\beta_p $ finden. Mit diesen Schätzern kann man schließlich Vorhersagen berechnen nach der Formel 
+\begin{align*}
+\hat{y}=\hat{\beta}_0+\hat{\beta}_1x_1+\ldots+\hat{\beta}_px_p.
+\end{align*}
+Die Schätzer sind dann genau diejenigen Parameter, für die die folgende Summe minimal wird: \begin{align*}
+\mathrm{RSS}=\sum_{i=1}^{n} (y_i-\hat{y}_i)^2=\sum_{i=1}^{n} (y_i-\hat{\beta}_0-\hat{\beta}_1x_1-\ldots-\hat{\beta}_px_p)^2.
+\end{align*}
+
+\paragraph{Wichtige Fragen:}
+\begin{enumerate}
+\item Hat mindestens eine der Kovariaten einen Effekt auf $ Y $?
+
+Um diese Frage zu beantworten, testen wir \begin{align*}
+H_0&:\beta_1=\beta_2=\ldots=\beta_p=0,\\
+H_A&:\beta_j\neq 0.
+\end{align*}
+Dazu berechnen wir die $ F $-Statistik \begin{align*}
+F=\frac{(\mathrm{TSS}-\mathrm{RSS})/p}{\mathrm{RSS}/(n-p-1)}.
+\end{align*}
+$ H_0 $ kann nicht abgelehnt werden, wenn $ F\approx 1 $. Gilt $ F>1 $, dann wird $ H_0 $ abgelehnt.
+
+\item Welche Kovariaten haben einen Effekt?
+
+Dies kann für jeden einzelnen Koeffizienten mittels $ t $-Test beantwortet werden. Wir testen $ H_0:\beta_j=0 $ gegen $ H_A:\beta_j\neq 0 $ und berechnen \begin{align*}
+t=\frac{\beta_j}{\mathrm{SD}(\hat{\beta}_2)}\sim A_{1-\nicefrac{\alpha}{2},n-p-1}.
+\end{align*}
+Beachte: Ist $ p $ groß, so ist die Anzahl der einzelnen $ t $-Tests groß und damit auch die Family-wise Error Rate. Das heißt, dass $ H_0 $ für mindestens ein $ \beta_j $ abgelehnt wird, obwohl $ H_0 $ wahr ist.
+\end{enumerate}
+
+
+\subsection{Nichtlineare Regression}
+\paragraph{Rückblick:}
+Eine lineare Regression kann mathematisch beschrieben werden durch: \begin{align*}
+Y=\beta_0+\beta_1x_i^{(1)}+\ldots+\beta_kx_i^{(k)}+\varepsilon_i,
+\end{align*}
+$ i\in\{1,\ldots,n\} $. Dabei gelten folgende Bezeichnungen:
+
+\begin{figure}[h]
+\centering
+\begin{tabular}{ll}
+Variable & Beschreibung\\
+\midrule
+$ n $ & Anzahl der Messungen/Individuen/Objekte\\
+$ k $ & Anzahl der Kovariablen\\
+$ x_i^{(j)} $ & Wert der Kovariablen $ j $ für Individuen $ i $\\
+$ \varepsilon_i $ & zufällige Störung (häufig: $ \varepsilon_i\sim N(0,\sigma^2),\ \sigma^2>0,\ i\in\{1,\ldots,n\} $, unabhängig)\\
+$ \beta_j $ & unbekannte, wahre Parameter\\
+\end{tabular}
+\end{figure}
+
+Die Parameter $ \beta_j $ müssen geschätzt werden, wofür sich unter anderem die Methode der kleinsten Quadrate eignet: \begin{align*}
+\sum_{i=1}^{n} \left(y_i-\left(\beta_0+\beta_1x_i^{(1)}+\ldots+\beta_kx_i^{(k)}\right)\right)^2=\sum_{i=1}^{n} \hat{\varepsilon}_i^2\quad\underset{\beta_0,\ldots,\beta_k}{\longrightarrow}\quad\mathrm{min}
+\end{align*}
+
+
+%Bild
+
+Um zu testen, ob $ x^{(j)} $ einen Einfluss auf $ Y $ hat, testet man \begin{align*}
+H_0^{(j)}:B_j=0\text{ vs. }H_A^{(j)}:B_j\neq 0.
+\end{align*}
+
+\subsubsection{Nichtlineare Zusammenhänge}
+Häufig bestehen nichtlineare Zusammenhänge zwischen abhängiger und unabhängigen Variablen. Manchmal ist dies aus theoretischen Wissen oder empirischer Beobachtung bekannt (Bsp.: Wachstum von Kindern). Oft hat man einen beschränkten Wertebereich, z.B. $ R=[0,1] $ oder einen diskreten Wertebereich, z.B. $ R=\{0,1\} $. Ein nichtlineares Modell kann mathematisch beschrieben werden durch:
+\begin{align*}
+Y_i=h\left(x_i^{(1)},\ldots,x_i^{(m)};\theta_1,\ldots,\theta_p\right)+\varepsilon_i,
+\end{align*}
+$ i\in\{1,\ldots,n\} $. Dabei ist $ h $ im Allgemeinen eine nichtlineare Funktion und $ \theta_1,\ldots,\theta_p $ sind die unbekannten, wahren Parameter.
+
+\paragraph{Beispiele:}
+\begin{enumerate}
+\item Biochemischer Sauerstoffverbrauch von Mikroorganismen: \begin{align*}
+h\left(x;\theta_1,\theta_2\right)=\theta_1(1-\exp(-\theta_2x))
+\end{align*}
+
+\item Cobb-Douglas-Funktion: \begin{align*}
+h\left(x^{(1)},x^{(2)};\theta_1,\theta_2,\theta_3\right)=\theta_1\left(x^{(1)}\right)^{\theta_2}\left(x^{(2)}\right)^{\theta_3}
+\end{align*}
+
+\item Polynomiale Regression: \begin{align*}
+h(x;\theta_0,\ldots,\theta_p)=\theta_0+\theta_1+\ldots+\theta_px^p
+\end{align*}
+\end{enumerate}
+
+\subsubsection{Linearisierung}
+Manchmal (praktisch eher häufig) lässt sich $ h $ in einen Ausdruck umwandeln, der linear in den transformierten Variablen ist.
+
+\paragraph{Beispiel:}
+Sei $ h(x;\theta_1,\theta_2)=\theta_1x^{\theta_2} $. Dann gilt \begin{align*}
+\log h(x;\theta_1,\theta_2)
+	&=\log\left(\theta_1x^{\theta_2}\right)\\
+	&=\log\theta_1+\log x^{\theta_2}\\
+	&=\log\theta_1+\theta_2\log x.
+\end{align*}
+Damit erhalten wir $ \tilde{h}(\tilde{x};\tilde{\theta}_1,\tilde{\theta}_2)=\log\theta_1+\theta_2\log x=\tilde{\theta}_1+\tilde{\theta}_2\tilde{x} $. Das zugehörige Modell ist \begin{align*}
+\tilde{Y}_i=\tilde{\theta}_1+\tilde{\theta}_2\tilde{x}+\varepsilon_i,
+\end{align*}
+$ i\in \{1,\ldots,n\} $. Die Parameter $ \tilde{\theta}_1 $ und $ \tilde{\theta_2} $ können nun über die Methode der kleinsten Quadrate geschätzt werden. Eine Rücktransformation liefert: \begin{align*}
+Y_i=\exp \tilde{Y}_i=\exp\tilde{\theta}_1\exp\left(\tilde{\theta}_2\tilde{x}\right)\exp\varepsilon_i=\theta_1x^{\theta_2}\exp \varepsilon_i.
+\end{align*}
+Zufällige Störungen wirken in diesem Fall multiplikativ und (falls $ \varepsilon\sim N(\cdot,\cdot) $) sind $ \log $-normalverteilt. Daraus folgern wir, dass wir Linearisierung nur anwenden, falls sich die Fehler tatsächlich so wie in der transformierten Variable verhalten. Durch eine Residuenanalyse könnte man jedoch auch in anderen Fällen eine Linearisierung in Erwägung ziehen.
+
+\subsubsection{Spezielle nichtlineare Situationen}
+\begin{align*}
+Y_i=\sum_{j=1}^{p} \theta_jh_j\left(x_i^{(1)},\ldots,x_i^{(m)}\right)+\varepsilon_i,
+\end{align*}
+$ i\in\{1,\ldots,n\} $. Beispiele für $ h_j $:\begin{enumerate}
+\item lineare Modell: $ h_j\left(x_i^{(1)},\ldots,x_i^{(m)}\right)=x_i^{(j)} $
+\item polynomielle Terme: $ h_j(x_i)=x_i^j $
+\item Indikatorfunktion: $ h_j\left(x_i^{(1)},\ldots,x_i^{(m)}\right)=1_{[\alpha_j,\alpha_{j+1})} $
+\end{enumerate}
+
+\paragraph{Polynomiale Regression:}
+
+\begin{align*}
+Y_i=\theta_0+\theta_1x_i+\theta_2x_i^2+\ldots+\theta_px_i^p+\varepsilon_i,
+\end{align*}
+$ i\in\{1,\ldots,n\} $. Dabei ist die Anpassung an die Daten umso besser, je größer $ p $ wird. Gleichzeitig verschlechtert sich damit aber auch das Randverhalten.
+
+\paragraph{Stückweise Regression:}
+\begin{align*}
+Y_i=\sum_{j=1}^{p} \theta_j1_{[\alpha_j,\alpha_{j+1})}\left(x^{(j)}\right)+\varepsilon_i,
+\end{align*}
+$ i\in\{1,\ldots,n\} $. Diese Art der Regression ermöglicht eine stückweise Approximation mit kostanten Funktionen. Erweiterungen sind mit linearen, quadratischen oder kubischen Funktionen möglich.
+
+\paragraph{Beispiel:}
+Seien $ m=1 $ und
+\begin{align*}
+Y_i=\sum_{j=1}^{p} \left(a_jx_i^3+b_jx_i^2+c_jx_i+d_j\right)1_{[\alpha_j,\alpha_{j+1})}(x_i)+\varepsilon_i.
+\end{align*}
+Bei stückweisen Regressionen können folgende Probleme auftreten: \begin{itemize}
+\item Unstetigkeiten an Intervallgrenzen
+\item Asymptotisches Verhalten an den Intervallgrenzen kann (insbesondere bei Polynomen höherer Ordnung) sehr unpassend sein.
+\end{itemize}
+Gewünscht sind jedoch stetige und idealerweise glatte Übergänge an den Intervallgrenzen.
+
+% hier fehlt was
+
+\subsection{Multiples Testen}
+
+\paragraph{Rückblick:}
+Bisher haben wir eine Hypothese bezüglich eines Parameters $ \theta $ betrachtet (bspw. $ \theta\in\{\mu,\sigma^2,\beta_j\} $). Mit $ \Theta $ bezeichnen wir den Parameterraum für $ \theta $ (bspw. $ \Theta\in\{\mathbb{R},\mathbb{R}_+,[0,1]\} $). Man kann den Parameterraum $ \Theta $ in $ \Theta_0 $ und $ \Theta_A $ zerlegen, sodass gilt: \begin{align*}
+\Theta_0\cup\Theta_A&=\Theta,\\
+\Theta_0\cap\Theta_A&=\varnothing.
+\end{align*}
+Entsprechend betrachtet man $ H_0:\theta\in\Theta_0 $ vs. $ H_A:\theta\in\Theta_A $ (bspw. seien $ \theta=\mu,~\Theta_A=\{0\},~\Theta=\mathbb{R}\setminus\{0\} $). Um nun zu testen, betrachten wir den Raum $ S^n $ aller $ n $-elementigen Stichproben $ X=(X_1,\ldots,X_n)^\top $. Weiter sei \begin{align*}
+\varphi\colon S^n\longrightarrow\{0,1\}
+\end{align*}
+ein Test. Für diesen Test gelten: \begin{itemize}
+\item $ \varphi(X)=1\iff H_0 $ wird verworfen,
+\item $ \varphi(X)=0\iff H_A $ wird nicht verworfen.
+\end{itemize}
+Bei derartigen Tests können Fehler auftreten. Ein Fehler 1. Art beschreibt die Ablehnung von $ H_0 $, obwohl $ H_0 $ gilt. Dies ist gleichbedeutend mit $ \varphi(X)=1 $, obwohl $ \theta\in \Theta_0 $. Ein Fehler 2. Art beschreibt den Fall, dass $ H_0 $ nicht abgelehnt wird, obwohl $ H_A $ gilt. Dies ist gleichbedeutend mit $ \varphi(X)=0 $, obwohl $ \theta\in\Theta_A $.
+
+\paragraph{Vorgehen:}
+\begin{enumerate}
+\item Festlegen einer oberen Schranke $ \alpha $ für Fehler 1. Art (bspw. $ \alpha\in\{10\%,5\%,1\%\} $)
+\item Minimierung der Wahrscheinlichkeit $ \beta $
+\end{enumerate}
+
+\subsubsection{Multiples Testproblem}
+Gegeben sei eine Stichprobe $ X=(X_1,\ldots,X_n)^\top\in S^n $. Ein multipler Test ist $ \varphi=(\varphi_1,\ldots,\varphi_m)^\top $, wobei jedes $ \varphi_j\colon S^n\longrightarrow\{0,1\} $ für $ j\in\{1,\ldots,m\} $ ein Test auf Grundlage der Stichprobe $ X $ ist. Sei nun $ \theta\in\Theta $ der wahre Parameter. Dann gilt $ H_0^{(j)} $ genau dann, wenn $ \theta\in\Theta_0^{(j)} $. Wir betrachten nun die Menge \begin{align*}
+I_0(\theta):=\left\lbrace j\in\{1,\ldots,m\}\mid \theta\in\Theta_0^{(j)}\right\rbrace
+\end{align*}
+der unter $ \theta $ wahren Nullhypothesen. Entsprechend definieren wir die Menge der unter $ \theta $ falschen Nullhypothesen gemäß \begin{align*}
+I_A(\theta):=\left\lbrace j\in\{1,\ldots,m\}\mid \theta\in\Theta_A^{(j)}\right\rbrace.
+\end{align*}
+
+\paragraph{Family-wise Error Rate (FWER):}
+Die Family-wise Error Rate ist definiert gemäß
+\begin{align*}
+\text{FWER}_\theta(\varphi):=P\left(\bigcup_{j\in I_0(\theta)}\{\varphi_i=1\}\right)
+\end{align*}
+und entspricht der Wahrscheinlichkeit für multiple Fehler 1. Art. Eine Abbildung $ \varphi $ heißt Test zum multiplen Niveau $ \alpha $, falls $ \text{FWER}_\theta(\varphi)\leq \alpha $ für alle $ \theta\in\Theta $ gilt.\par\bigskip
+
+\begin{theorem}[Bonferroni]
+Sei $ \varphi=(\varphi_1,\ldots,\varphi_m)^\top $ ein multipler Test und es gelte \begin{align*}
+P(\{\varphi_j=1\})\leq \frac{\alpha}{m}
+\end{align*} 
+für alle $ \theta\in\Theta_0^{(j)} $ für alle $ j\in\{1,\ldots,m\} $. Dann folgt $ \mathrm{FWER}_\theta(\varphi)\leq \alpha $ für alle $ \theta\in\Theta $.
+\end{theorem}\par\bigskip
+
+\begin{theorem}[Sidak]
+Sei $ \varphi=(\varphi_1,\ldots,\varphi_m)^\top $ ein multipler Test und es seien $ \varphi_j(X) $ stochastisch unabhängig für alle $ j\in\{1,\ldots,m\} $. Es gelte \begin{align*}
+P(\{\varphi_j=1\})=1-(1-\alpha)^\frac{1}{m}
+\end{align*}
+für alle $ \theta\in\Theta_0^{(j)} $. Dann folgt $ \mathrm{FWER}_\theta(\varphi)\leq\alpha $ für alle $ \theta\in\Theta $. Ist also jedes $ \varphi_j $ ein Test zum Niveau $ \tilde{\alpha}=1-(1-\alpha)^\frac{1}{m} $ und sind alle Tests voneinander unabhängig, so ist $ \varphi $ ein multipler Test zum multiplen Niveau $ \alpha $.
+\end{theorem}
+
+\paragraph{Bemerkung:} Es gilt $ \frac{\alpha}{m}\leq 1-(1-\alpha)^\frac{1}{m} $. Deshalb ist Sidak weniger konservativ als Bonferroni, wenn die Tests unabhängig voneinander sind.
+
+\paragraph{$ p $-Wert:}
+Der $ p $-Wert ist die Wahrscheinlichkeit, dass die Prüfgröße $ T $ (statistischer Test) den Wert $ T(X) $ oder einen extremeren Wert annimmt, wobei $ x=(x_1,\ldots,x_n)^\top $ die Realisierung der zugrunde liegenden Stichprobe $ X=(X_1,\ldots,X_n)^\top $ ist. Man betrachtet also \begin{align*}
+\sup_{\vartheta\in\Theta}P(\text{\glqq $ T(X) $ ist extremer als $ T(x) $.\grqq}).
+\end{align*}
+
+\paragraph{Bonferroni-Holm-Test:}
+Seien $ \varphi=(\varphi_1,\ldots,\varphi_m)^\top $ ein multipler Test, $ p=(p_1,\ldots,p_m)^\top $ die zum Test gehörigen $ p $-Werte mit ...
+
+\newpage
+\section{Modellwahl und Regularisierung}
+\begin{align*}
+Y_i=\beta_0+\beta_1x_i^{(1)}+\ldots+\beta_nx_i^{(k)}+\varepsilon_i,
+\end{align*}
+$ i\in\{1,\ldots,n\} $. Schätzer für $ \beta_j $ über Methode der kleinsten Quadrate.
+
+\paragraph{Probleme:}
+\begin{enumerate}
+\item $ n\approx k $
+\item $ k>n $ bzw. $ k\gg n $ $ \implies $ keine eindeutige Lösung
+\end{enumerate}
+
+\paragraph{Lösungsideen:}
+\begin{enumerate}
+\item Einfügen zusätzlicher Bedingungen in das Modell
+\item Eliminierung der irrelevanten Variablen
+\end{enumerate}
+
+%\subsubsection{Modellwahl}
+
+\subsection{Modellbewertung}
+
+\paragraph{Residual Sum of Squares:} 
+\begin{align*}
+\mathrm{RSS}:=\sum_{i=1}^{n} (y_i-\hat{y}_i)^2
+\end{align*}
+
+\paragraph{Mallow's $ C_p $:}
+\begin{align*}
+C_p:=\frac{1}{n}(\mathrm{RSS}+2k\hat{\sigma}^2)
+\end{align*}
+mit $ \hat{\sigma}^2 $ als Varianzschätzer für $ \varepsilon_i $, $ i\in\{1,\ldots,n\} $.
+
+\paragraph{Akaike Informationskriterium (AIC):}
+\begin{align*}
+\mathrm{AIC}:=n\log\hat{\sigma}^2+2k
+\end{align*}
+
+\paragraph{Bayes'sches Informationskriterium (BIC):}
+\begin{align*}
+\mathrm{BIC}:=n\log\hat{\sigma}^2+k\log n
+\end{align*}
+
+\paragraph{Bestimmtheitsmaß ($ R^2 $):}
+\begin{align*}
+R^2:=1-\frac{\mathrm{RSS}}{\mathrm{TSS}}=1-\frac{\sum_{i=1}^{n} (y_i-\hat{y}_i)^2}{\sum_{i=1}^{n} (y_i-\bar{y}_n)^2}
+\end{align*}
+
+\paragraph{Korrigiertes Bestimmtheitsmaß ($ R^2_\mathrm{adj} $):}
+\begin{align*}
+R^2_{\mathrm{adj}}:=1-\frac{\frac{\mathrm{RSS}}{n-k-1}}{\frac{\mathrm{TSS}}{n-1}}\in[0,1]
+\end{align*}
+
+\paragraph{Bemerkung:} \begin{itemize}
+\item $ \mathrm{RSS} $ und $ R^2 $ hängen stark von der Anzahl der Parameter ab.
+
+\item $ \mathrm{RSS} $ und $ R^2 $ sind nur zum Vergleich von Modellen mit der gleichen Anzahl an Einflussgrößen geeignet.
+\end{itemize}
+
+\subsection{Modellwahlverfahren}
+\paragraph{Best Subset Selection:}
+\begin{itemize}
+\item Vergleich aller möglichen Submodelle: \begin{align*}
+\left\lbrace x^{(j_1)},\ldots,x^{(j_l)}\right\rbrace\subseteq \left\lbrace x^{(1)},\ldots,x^{(k)}\right\rbrace
+\end{align*}
+Dann betrachtet man alle Modelle \begin{align*}
+Y_i=\beta_0+\beta_1x_i^{(j_1)}+\ldots+\beta_lx_i^{(j_l)}+\varepsilon_i,
+\end{align*}
+für $ i\in\{1,\ldots,n\} $. Dafür ergeben sich $ 2^k $ Möglichkeiten.
+
+\item Vorgehen:
+\begin{enumerate}
+\item Berechne das Null-Modell $ M_0 $: \begin{align*}
+Y_i=\beta_0+\varepsilon_i.
+\end{align*}
+\item Für $ l=1,\ldots,k $: 
+\begin{enumerate}
+\item Berechne alle $ \binom{k}{l} $ Modelle mit genau $ l $ Einflussgrößen.
+\item Wähle das Modell mit dem größten $ R^2 $, erhalte $ M_l $.
+\end{enumerate}
+\item Wähle unter $ M_0,\ldots,M_k $ das beste Modell gemäß:
+\begin{itemize}
+\item $ R^2_\mathrm{adj} $
+\item AIC
+\item kreuzvalidierte Vorhersagefehler
+\end{itemize}
+\end{enumerate}
+
+\item Falls $ k $ zu groß ist, wird die Best Subset Selection zu teuer. Beispielsweise sei $ k=20 $. Dann müssten bereits $ >10^6 $ Modelle berechnet werden.
+\end{itemize}
+
+\paragraph{Vorwärtsselektion:}
+\begin{itemize}
+\item Vorgehen: 
+\begin{enumerate}
+\item Berechne das Null-Modell $ M_0 $.
+\item Für $ l=0,\ldots,k-1 $:
+\begin{enumerate}
+\item Berechne alle $ k-l $ Modelle, welche das Modell $ M_l $ mit einem zusätzlichen Parameter betrachten.
+\item Wähle unter all diesen $ k-l $ Modellen das mit dem größten $ R^2 $, erhalte $ M_{l+1} $.
+\end{enumerate}
+
+\item Wähle unter $ M_0,\ldots,M_k $ das beste Modell gemäß:
+\begin{itemize}
+\item $ R^2_\mathrm{adj} $
+\item AIC
+\item kreuzvalidierte Vorhersagefehler
+\end{itemize}
+\end{enumerate}
+
+\item Vorteil: Das Verfahren ist weniger rechenintensiv, die Anzahl der zu berechnenden Modelle ist \begin{align*}
+1+\sum_{l=0}^{k-1} (k-l)=1+\frac{k(k+1)}{2}.
+\end{align*}
+Für $ k=20 $ müssen also $ 211 $ Modelle berechnet werden.
+
+\item Nachteil: Die Vorwärtsselektion übersieht viele Modelle.
+\item Für $ k>n $ muss der Algorithmus bei $ l=n-1 $ abgebrochen werden, da sonst keine eindeutigen Lösungen enstehen.
+\end{itemize}
+
+\paragraph{Rückwärtsselektion:}
+\begin{itemize}
+\item Vorgehen:
+\begin{enumerate}
+\item Berechne das volle Modell $ M_k $.
+\item Für $ l=k,\ldots,1 $:
+\begin{enumerate}
+\item Berechne alle $ l $ Modelle, welche alle Einflussgrößen aus $ M_l $ außer einem enthalten.
+\item Wähle das Modell mit dem größten $ R^2 $, erhalte $ M_{l-1} $.
+\end{enumerate}
+\item Wähle unter $ M_k,\ldots,M_0 $ das beste Modell gemäß: 
+\begin{itemize}
+\item $ R^2_\mathrm{adj} $
+\item AIC
+\item kreuzvalidierte Vorhersagefehler
+\end{itemize}
+\end{enumerate}
+
+\item Die Vor- und Nachteile entsprechen denen der Vorwärtsselektion. Es muss $ k\leq n $ gelten.
+\end{itemize}
+
+\newpage
+\section{Resampling}
+
+\subsection{Cross Validation}
+
+\paragraph{Beispiel:}
+Seien $ (x_i,y_i)_{i=1,\ldots,n} $ eine Stichprobe, $ x_i $ die Körpergröße und $ y_i $ das Körpergewicht. Wir betrachten das Modell \begin{align*}
+Y_i=\beta_0+\beta_1x_i+\varepsilon_i
+\end{align*}
+für $ i\in\{1,\ldots,n\} $. Wir möchten nun $ \hat{\beta}_0 $ und $ \hat{\beta}_1 $ bestimmen und dann einschätzen, wie gut die beiden Schätzungen sind. Wir betrachten \begin{align*}
+\mathrm{MSE}=\frac{1}{n}\sum_{i=1}^{n} (\hat{y}_i-y_i)^2.
+\end{align*}
+Dieser Fehler gilt jedoch nur für die vorliegende Stichprobe und nicht zwangläufig für zukünftige Daten.
+
+\paragraph{Validation Set Approach:}
+\begin{itemize}
+\item Stichprobenaufteilung in Trainingsdatensatz und Validierungsdatensatz
+\item Schätzen der Parameter durch Trainingsdatensatz
+\item Überprüfung der Vorhersagegüte durch Validierungsdatensatz
+\end{itemize}
+
+\paragraph{Beispiel (Fortsetzung):}
+Seien $ (x_i,y_i)_{i\in I_T} $ der Trainingsdatensatz und $ (x_i,y_i)_{i\in I_V} $ der Validierungsdatensatz. Dabei gelte $ I_T\cap I_V=\varnothing $ und $ I_T\cup I_V=\{1,\ldots,n\} $. Seien weiter $ \hat{\beta}_0^{(T)},\hat{\beta}_1^{(T)} $ Schätzer für $ \beta_0,\beta_1 $ unter Verwendung der Trainingsdaten. Dann berechnen wir den mittleren quadratischen Fehler über die Validierungsdaten: \begin{align*}
+\mathrm{MSE}_V:=\frac{1}{|I_V|}\sum_{i\in I_V} \left(y_i-\left(\hat{\beta}_0^{(T)}+\hat{\beta}_1^{(T)}x_i\right)\right)^2.
+\end{align*}
+
+\paragraph{Problem:}
+\begin{itemize}
+\item Bias durch ungünstige Aufteilung in Trainings- und Validierungsdaten
+\item Fehler kann sowohl Schätzungen betreffen als auch die Fehleinschätzung des mittleren quadratischen Fehlers
+\end{itemize}
+
+\paragraph{Lösung:}
+\begin{itemize}
+\item $ M $-malige zufällige Aufteilung der Daten
+\item Schätzen der Parameter und Berechnen der mittleren quadratischen Fehler für alle $ m\in\{1,\ldots,M\} $ und anschließende Mittelung
+\end{itemize}
+
+\paragraph{Beispiel (Fortsetzung):}
+Aufteilung in $ M $ Trainings- und Validierungsdatensätze: \begin{align*}
+(x_i,y_i)_{i\in I_T^{(1)}}\ &,\ (x_i,y_i)_{i\in I_V^{(1)}}\\
+&\vdots\\
+(x_i,y_i)_{i\in I_T^{(M)}}\ &,\ (x_i,y_i)_{i\in I_V^{(M)}}
+\end{align*}
+Wir bestimmen dann jeweils $ \hat{\beta}_0^{(T,m)},\hat{\beta}_1^{(T,m)} $ und \begin{align*}
+\mathrm{MSE}_V^{(m)}:=\frac{1}{|I_V^{(m)}|}\sum_{i\in I_V^{(m)}} \left(y_i-\left(\hat{\beta}_0^{(T,m)}+\hat{\beta}_1^{(T,m)}x_i\right)\right)^2
+\end{align*}
+für $ m\in\{1,\ldots,M\} $. Wir bestimmen dann den gemittelten Fehler \begin{align*}
+\mathrm{MSE}_V^M:=\frac{1}{M}\sum_{m=1}^{M} \mathrm{MSE}_V^{(m)}.
+\end{align*}
+
+\paragraph{Leave One Out Cross Validation:}
+Ein Element (Tupel) der Stichprobe dient als Validierungsdatensatz und der Rest als Validierungsdatensatz. Dies wird für jedes Element im Gesamtdatensatz durchgeführt.
+
+\paragraph{Beispiel (Fortsetzung):}
+Für alle $ m\in\{1,\ldots,n\} $ teilen wir die Daten in Trainingsdatensatz $ (x_i,y_i)_{i\in\{1,\ldots,n\}\setminus\{m\}} $ und Validierungsdatensatz $ (x_m,y_m) $. Dann berechnen wir \begin{align*}
+\mathrm{MSE}_V^{(m)}=\left(y_m-\left(\hat{\beta}_0^{(T,m)}+\hat{\beta}_1^{(T,m)}x_m\right)\right)^2.
+\end{align*}
+Diese Fehler mitteln wir und erhalten \begin{align*}
+\mathrm{MSE}_V^n=\frac{1}{n}\sum_{m=1}^{n} \mathrm{MSE}_V^{(m)}.
+\end{align*}
+
+\paragraph{$ K $-fold Cross Validation:}
+Die Daten werden in $ K $ möglichst gleichgroße Blöcke aufgeteilt. Es wird dann jeweils ein Block als Validierungsdatensatz und die restlichen $ K-1 $ Blöcke als Trainingsdatensatz genutzt. Üblich sind $ K\in\{5,10\} $. Zusätzlich kann man die Aufteilung in die Blöcke wiederholt durchführen.
+
+\paragraph{Beispiel (Fortsetzung):}
+Wir definieren $ K $ Blöcke $ (x_i,y_i)_{i\in I^{(k)}} $ für $ k\in\{1,\ldots,K\} $, wobei $ I^{(k_1)}\cap I^{(k_2)}=\emptyset $ für $ k_1\neq k_2 $ und $ \bigcup_{k\in\{1,\ldots,K\}}I^{(k)}=\{1,\ldots,n\} $ gelten. Wir teilen nun für alle $ k\in\{1,\ldots,K\} $ unsere Daten in Trainingsdatensatz $ (x_i,y_i)_{i\in I^{(l)}} $ für $ l\in\{1,\ldots,K\}\setminus\{k\} $ und Validierungsdatensatz $ (x_i,y_i)_{i\in I^{(k)}} $ auf. Dann berechnen wir unsere Fehler \begin{align*}
+\mathrm{MSE}_V^{(k)}=\frac{1}{|I^{(k)}|}\sum_{i\in I^{(k)}} \left(y_i-\left(\hat{\beta}_0^{(T,k)}+\hat{\beta}_1^{(T,k)}x_i\right)\right)^2.
+\end{align*}
+Diese Fehler mitteln wir und erhalten \begin{align*}
+\mathrm{MSE}_V^K=\frac{1}{K}\sum_{k=1}^{K} \mathrm{MSE}_V^{(k)}.
+\end{align*}
+
+\newpage
+\paragraph{Bias-Varianz-Dilemma:}
+Bei unterschiedlicher Nutzung der Daten zum Trainieren und Validieren können folgende Probleme auftreten:
+\begin{figure}[h]
+\centering
+\begin{tabular}{p{2.5cm}p{2.5cm}p{2.5cm}p{2.5cm}}
+& 50:50 & $ K $-fold CV & LOOCV \\ 
+\midrule
+Bias & $ \uparrow $ & 0 & $ \downarrow $ \\ 
+Varianz & $ \downarrow $ & 0 & $ \uparrow $\\
+\end{tabular} 
+\end{figure}
+
+\subsection{Bootstrapping}
+Bootstrapping wird dann angewandt, wenn Unsicherheit über die zugrunde liegende Verteilung herrscht.
+
+\paragraph{Beispiel:}
+Seien $ X=(X_1,\ldots,X_n)^\top $ eine Stichprobe mit $ X_i $ unabhängig und $ \bar{X}_n $ das Stichprobenmittel. Wir wollen nun zusätzlich Konfidenzintervall bzw. Standardfehler des Schätzers angeben. Das ist wichtig für die Deskription der Daten und die Inferenz (statistische Tests). Wir wissen im Allgemeinen jedoch nicht, wie $ X $ verteilt ist.
+\begin{align*}
+\mathrm{SE}(\bar{X}_n)=\sqrt{\mathrm{Var}(\bar{X}_n)}=\frac{1}{n^2}\sum_{i=1}^{n} \mathrm{Var}(X_i)=\ ?
+\end{align*}
+
+\paragraph{Lösung:}
+Eine Idee wäre, eine Simulation durchzuführen. Dazu ziehen wir wiederholt Stichproben mit Zurücklegen aus der Stichprobe (Ersetzen der unbekannten Verteilung durch die empirische Verteilung).
+
+\paragraph{Beispiel (Fortsetzung):}
+Wir ziehen nun $ B $ Stichproben (mit Zurücklegen) aus $ X=(X_1,\ldots,X_n)^\top $. Wir erhalten \begin{align*}
+X^{(b)}=(X_{b_1},\ldots,X_{b_n})
+\end{align*} 
+für $ b\in\{1,\ldots,B\} $, $ b_j\in\{1,\ldots,n\} $ und $ j\in\{1,\ldots,n\} $. Wir berechnen für jede Bootstrap-Strichprobe den Mittelwert: \begin{align*}
+\bar{X}_n^{(b)}=\frac{1}{n}\sum_{j=1}^{n} X_{b_j}.
+\end{align*}
+Wir bestimmen nun den Mittelwert über alle Bootstrap-Mittelwerte: \begin{align*}
+\bar{X}_n^B=\frac{1}{B}\sum_{b=1}^{B} \bar{X}_n^{(b)}.
+\end{align*}
+Damit schätzen wir den Standardfehler über einen Varianzschätzer (korrigierte Stichprobenvarianz): \begin{align*}
+\widehat{\mathrm{SE}}(\bar{X}_n)=\sqrt{\frac{1}{B-1}\sum_{b=1}^{B} \left(\bar{X}_n^{(b)}-\bar{X}_n^B\right)^2}.
+\end{align*}
+
+\paragraph{Bemerkungen:}
+\begin{itemize}
+\item Verteilung $ \implies $ empirische Verteilung
+\item Erwartungswert $ \implies $ Mittelwert
+\item Mittelwert $ \implies $ Bootstrap-Mittelwert$  $
+\end{itemize}
+
+
+\end{document}
