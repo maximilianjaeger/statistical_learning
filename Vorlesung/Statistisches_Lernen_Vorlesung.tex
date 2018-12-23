@@ -60,7 +60,7 @@
 		{\color{hsrmWarmGreyDark}{(\arabic{enumii})}}
 	
 	\setlist{
-		topsep     = 0pt,
+		topsep     = 5pt,
 		itemsep    = 0pt, 
 		wide       = 0pt, 
 		labelwidth = 1.5em, 
@@ -79,7 +79,7 @@
 		leftmargin = \dimexpr\labelwidth +\labelsep\relax}
 
 \setlist[itemize]{
-	topsep  = 0pt, 
+	topsep  = 5pt, 
 	itemsep = 0pt}
 	
 \renewcommand{\labelitemi}{\color{hsrmWarmGreyDark}{$ \circ $}}
@@ -1323,9 +1323,64 @@ für alle $ \theta\in\Theta_0^{(j)} $. Dann folgt $ \mathrm{FWER}_\theta(\varphi
 Der $ p $-Wert ist die Wahrscheinlichkeit, dass die Prüfgröße $ T $ (statistischer Test) den Wert $ T(X) $ oder einen extremeren Wert annimmt, wobei $ x=(x_1,\ldots,x_n)^\top $ die Realisierung der zugrunde liegenden Stichprobe $ X=(X_1,\ldots,X_n)^\top $ ist. Man betrachtet also \begin{align*}
 \sup_{\vartheta\in\Theta}P(\text{\glqq $ T(X) $ ist extremer als $ T(x) $.\grqq}).
 \end{align*}
+Der $ p $-Wert ist unter $ H_0 $ gleichverteilt auf $ [0,1] $.
 
 \paragraph{Bonferroni-Holm-Test:}
-Seien $ \varphi=(\varphi_1,\ldots,\varphi_m)^\top $ ein multipler Test, $ p=(p_1,\ldots,p_m)^\top $ die zum Test gehörigen $ p $-Werte mit ...
+Seien $ \varphi=(\varphi_1,\ldots,\varphi_m)^\top $ ein multipler Test und $ p=(p_1,\ldots,p_m)^\top $ die zum Test gehörigen $ p $-Werte. Seien nun $ p_{(1)},\ldots,p_{(m)} $ die vom niedrigsten zum höchsten geordneten $ p $-Werte und $ H_{(1)},\ldots,H_{(m)} $ die zugehörigen Nullhypothesen. Dann setzen wir: \begin{align*}
+\tilde{\alpha}_j:=\begin{cases}
+\case{\frac{\alpha}{j}}{P_j(x)\text{ nicht unabhängig,}}\\
+\case{1-(1-\alpha)^\frac{1}{j}}{P_j(x)\text{ unabhängig.}}
+\end{cases}
+\end{align*}
+Weiter sei $ \varphi^\mathrm{BH}=\left(\varphi_1^\mathrm{BH},\ldots,\varphi_m^\mathrm{BH}\right)^\top $ mit \begin{align*}
+\varphi_j^\mathrm{BH}:=\begin{cases}
+\case{1}{j\leq j^\ast,}\\
+\case{0}{j>j^\ast}
+\end{cases}
+\end{align*}
+und $ j^\ast =\max\{j\in\{1,\ldots,m\}:p_{(j)}\leq \tilde{\alpha}_{m-j+1}\} $ sowie $ \max\{\varnothing\}:=-\infty $.
+
+\paragraph{False Discovery Rate:}
+Man betrachte:
+\begin{figure}[h]
+\centering
+\begin{tabular}{p{3cm}p{3cm}p{3cm}p{3cm}}
+& Test nicht ablehnen & Test ablehnen\\
+\midrule
+Hypothese wahr & $ m_0(\theta)-V(\theta) $ & $ V(\theta) $ & $ m_0(\theta) $\\
+Hypothese falsch & $ m_A(\theta)-S(\theta) $ & $ S(\theta) $ & $ m_A(\theta) $\\
+\midrule
+& $ m-R(\theta) $ & $ R(\theta) $ & $ m $
+\end{tabular}
+\end{figure}
+
+mit den folgenden Bezeichnungen: 
+\begin{figure}[h]
+\centering
+\begin{tabular}{ll}
+Variable & Beschreibung\\
+\midrule
+$ m $ & Anzahl von Nullhypothesen\\
+$ m_0(\theta) $ & Anzahl der unter $ \theta $ wahren Nullhypothesen\\
+$ m_A(\theta) $ & Anzahl der unter $ \theta $ falschen Nullhypothesen\\
+$ R(\theta)=\sum_{j=1}^{n} \varphi_i $ & Anzahl der unter $ \theta $ verworfenen Nullhypothesen\\
+$ V(\theta)=\sum_{j\in I_0} \varphi_j-Q $ & Anzahl falsch abglehnter Nullhypothesen\\
+$ S(\theta)=\sum_{j\in I_A(\theta)} \varphi_j $ & Anzahl korrekt verworfener Nullhypothesen
+\end{tabular}
+\end{figure}
+
+Man berechnet dann  \begin{align*}
+\mathrm{FDR}_\theta(\varphi):=\sum \left(\frac{V(\theta)}{\max\{R(\theta),1\}}\right).
+\end{align*}
+
+\paragraph{Benjamin-Hochberg-Test:}
+Für $ j\in\{1,\ldots,m\} $ setze $ \tilde{\alpha}_j:=j\cdot\frac{\alpha}{m} $, \begin{align*}
+\varphi^\mathrm{FDR}:=\begin{cases}
+\case{1}{j<j^\ast,}\\
+\case{0}{j\geq j^\ast}
+\end{cases}
+\end{align*}
+und $ j^\ast:=\max\{j\in\{1,\ldots,m\}:P(j)\leq\tilde{\alpha}_j\} $.
 
 \newpage
 \section{Modellwahl und Regularisierung}
@@ -1467,6 +1522,37 @@ Für $ k=20 $ müssen also $ 211 $ Modelle berechnet werden.
 
 \item Die Vor- und Nachteile entsprechen denen der Vorwärtsselektion. Es muss $ k\leq n $ gelten.
 \end{itemize}
+
+\subsection{Regularisierung}
+
+\subsubsection{Ridge-Regression}
+Sei $ \lambda>0 $ und betrachte \begin{align*}
+\sum_{i=1}^{n} \left(Y_i-\left(\beta_0+\beta_1x^{(1)}+\ldots+\beta_kx^{(k)}\right)\right)^2+\underbrace{\lambda\sum_{j=1}^{k} \beta_j^2}_{\text{Strafterm}}\quad\underset{\beta_0,\ldots,\beta_k}{\longrightarrow}\quad\mathrm{min}.
+\end{align*}
+Durch den Strafterm können betragsmäßig große $ \beta_j $ vermieden werden. $ \lambda $ heißt Tuning-Parameter und steuert die Stärke der Bestrafung betragsmäßig großer $ \beta_j $. Dabei können folgende Grenzfälle auftreten: \begin{itemize}
+\item $ \lambda\longrightarrow 0: $ übliche Regression über KQM
+\item $ \lambda\gg 0: $ Bestrafung betragsmäßig großer $ \beta_j $ bekommt Übergewicht, d.h. $ \|\hat{\beta}\|_2\longrightarrow0 $ für $ \lambda\longrightarrow0 $
+\end{itemize}
+
+\paragraph{Beobachtung:}
+Bei linearer Regression hängt der Wert $ \hat{\beta}_jx^{(j)} $ nicht von der Skalierung der Einflussgröße $ x^{(j)} $ ab. Bei der Ridge-Regression gilt das nicht mehr. Einen Ausweg bietet die Standardisierung der Modellbeschreibung gemäß \begin{align*}
+\tilde{x}_i^{(j)}:=\frac{x_i^{(j)}}{\sqrt{\frac{1}{n}\displaystyle\sum_{i=1}^{n} \left( x_i^{(j)}-\bar{x}_n^{(j)}\right)^2}}.
+\end{align*}
+Damit haben alle $ \tilde{x}^{(j)} $ Varianz 1 und sind unabhängig von der Skalierung. Durch Ridge-Regression \glqq schrumpfen\grqq\ die Koeffizienten und die Varianz der Schätzer wird reduziert.
+
+\subsubsection{Least Absolute Shrinkage and Selection Operator}
+Sei $ \lambda>0 $ und betrachte \begin{align*}
+\sum_{i=1}^{n} \left(Y_i-\left(\beta_0+\beta_1x^{(1)}+\ldots+\beta_kx^{(k)}\right)\right)^2+\underbrace{\lambda\sum_{j=1}^{k} |\beta_j|}_{\text{Strafterm}}\quad\underset{\beta_0,\ldots,\beta_k}{\longrightarrow}\quad\mathrm{min}.
+\end{align*}
+Im Gegensatz zur Ridge-Regression nutzt der Strafterm hier die $ L_1 $-Norm. Dadurch können $ \beta_j $ auf 0 geschätzt werden. Dieses Verfahren ist einfacher zu implementieren, jedoch erhöht sich die Varianz der Schätzer.
+
+\subsubsection{Wahl des Tuning-Parameters}
+\begin{enumerate}
+\item Wähle Gitter von möglichen $ \lambda $-Werten.
+\item Berechne für jeden dieser Werte den kreuzvalidierten Vorhersagefehler.
+\item Wähle das $ \lambda $ mit dem kleinsten Fehler.
+\item Berechne mit dem finalen $ \lambda $ das Modell erneut.
+\end{enumerate}
 
 \newpage
 \section{Resampling}
