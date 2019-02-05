@@ -1,4 +1,4 @@
-\documentclass[10pt, a4paper]{extarticle}
+\documentclass[10pt, a4paper, twoside]{extarticle}
 
 
 % FORMAT
@@ -32,7 +32,7 @@
 \usepackage{colortbl}
 
 \newcolumntype{K}{\columncolor[grey]{0.1}\raggedright}
-%\def\arraystretch{1.5}
+\def\arraystretch{1.25}
 
 
 % ABBILDUNGEN
@@ -286,40 +286,43 @@
 \newcommand
 	{\mySection}[2]
 	{
+		\cleardoublepage
 		\ifnum\thesection=0
 			\newcommand{\numColor}{white}
+			\newcommand{\chapColor}{black}
 		\else
-			\newcommand{\numColor}{hsrmRedDark}
+			\newcommand{\numColor}{black}
+			\newcommand{\chapColor}{white}
 		\fi
-		\centering
-		\begin{tikzpicture}
-		\node (A) at (0,0) {};
-		\draw[hsrmRedDark, fill = hsrmRedDark] 
-			($ (A) + (-6cm, -0.5cm) $) 
-				node[left=-5pt] {\Large $ \twoheadrightarrow $} --
-			($ (A) + (6cm, -0.5cm) $) 
-				node[right=-5pt] {\Large $ \twoheadleftarrow $};
-		\node[\numColor] at (A) {{\huge\textbf{\thesection}}};
-		\node[hsrmRedDark] (B) at ($ (A) + (0cm, -1.2cm) $) {
-		\parbox{\textwidth - 4cm}{\centering\huge\textbf{#1}}};
+		\begin{tikzpicture}[remember picture, overlay]
+		\draw[fill = black, draw = none]
+			($ (current page.north east) + (0cm, -2cm)$) rectangle
+			($ (current page.north east) + (-7cm, -3cm) $)
+			node[above right = 7pt, color = \chapColor] {\LARGE{KAPITEL}};
+		\draw[fill = black, draw = none]
+			($ (current page.north east) + (0cm, -3cm)$) rectangle
+			($ (current page.north west) + (2.5cm, -2.98cm) $);
 		\end{tikzpicture}
+		
+		\vspace{1cm}
+		\begin{minipage}[t]{0.7\textwidth}
+		\fontsize{36}{28}\selectfont #1\raggedright 
+		\end{minipage}\hfill
+		%
+		\begin{minipage}[b]{0.2\textwidth}
+		\fontsize{36}{28}\selectfont\color{\numColor}\bfseries\thesection\raggedleft
+		\end{minipage}
 	}
 
 % Subsection
 \newcommand
 	{\mySubsection}[1]
-	{\color
-		{hsrmRedDark}
-		{\Large\textbf{\thesubsection \hspace{.5em}#1}}
-	}
+	{\color{black}\huge\thesubsection \hspace{.5em}#1}
 
 % Subsubsection
 \newcommand
 	{\mySubsubsection}[1]
-	{\color
-		{hsrmRedDark}
-		{\large\textbf{\thesubsubsection \hspace{.5em}#1}}
-	}
+	{\color{black}\Large\itshape\thesubsubsection \hspace{.5em}#1}
 
 % Section
 \titleformat{\section}
@@ -360,7 +363,7 @@
 % Paragraph
 \renewcommand
 	{\paragraph}[1]
-	{\par\bigskip {\color{hsrmRedDark}#1}\par}
+	{\par\bigskip {\bfseries #1} \par}
 
 
 % SHORTCUTS
@@ -374,59 +377,64 @@
 \date{WS 2018/19}
 
 \makeatletter							
-\def\printtitle{{\hspace{2cm} 
-	\color{hsrmRedDark}\Huge\bfseries \parbox{\textwidth -4cm}{\@title}}}
-\def\printauthor{{\hspace{2cm} 
-	\color{hsrmRedDark}\large \parbox{\textwidth -4cm}{\@author}}}		
-\def\printdate{{\hspace{2cm} 
-	\color{hsrmRedDark}\large \parbox{\textwidth -4cm}{\@date}}}		
+\def\printtitle{\@title}
+\def\printauthor{\@author}	
+\def\printdate{\@date}	
 \makeatother	
 
 
 \begin{document}
 
+\pagenumbering{gobble}
 
 \begin{tikzpicture}[remember picture, overlay]
-\fill[hsrmRedDark] 
-	($ (current page.north west) $) rectangle 
-	($ (current page.south west) + (4cm, 0cm) $);
+\fill
+	($ (current page.north west) + (2.5cm, 0cm) $) rectangle 
+	($ (current page.north west) + (3.5cm, -7cm) $);
+\draw[fill = black, draw = none] 
+	($ (current page.north west) + (2.5cm, 0cm) $) rectangle 
+	($ (current page.north west) + (2.52cm, -14cm) $)
+		node[above right = 20pt, color = black] {
+			\parbox{\textwidth - 20pt}{
+				\Large\printdate\par\bigskip
+				\fontsize{36}{28}\selectfont\printtitle\par\bigskip
+				\Large\selectfont\printauthor
+			}
+		};
+
+\fill
+	($ (current page.south east) + (-2.5cm, 0cm) $) rectangle 
+	($ (current page.south east) + (-3.5cm, 2cm) $);
+\draw[fill = black, draw = none] 
+	($ (current page.south east) + (-2.5cm, 0cm) $) rectangle 
+	($ (current page.south east) + (-2.52cm, 8cm) $)
+		node[below left = 20pt, color = black] {
+			\parbox{\textwidth - 20pt}{
+				\raggedleft
+				\emph{An Introduction to Statistical Learning}\\
+				James, G., 
+				Witten, D., 
+				Hastie, T. and 
+				Tibshirani, R.\par\bigskip
+
+				\emph{Lehrbuch der Wahrscheinlichkeitsrechnung}\\
+				Gnedenko, B.W.\par\bigskip
+
+				\emph{Theoretical Statistics}\\
+				Cox, D.R. and 
+				Hinkley, D.V.
+			}
+		};
 \end{tikzpicture}
 
 
-% TITELSEITE
-\null\vspace{4cm}
-\printdate\par\bigskip\bigskip
-\printtitle\par\bigskip\bigskip
-\printauthor
-
-
-\vfill
-\begin{flushright}
-\large
-\emph{An Introduction to Statistical Learning}\\
-James, G., Witten, D., Hastie, T. and Tibshirani, R.\par\bigskip
-
-\emph{Lehrbuch der Wahrscheinlichkeitsrechnung}\\
-Gnedenko, B.W.\par\bigskip
-
-\emph{Theoretical Statistics}\\
-Cox, D.R. and Hinkley, D.V.
-\end{flushright}
-\thispagestyle{empty}
-\clearpage
-
-
 % INHALTSVERZEICHNIS
+\newpage
+\pagenumbering{Roman}
 \localtableofcontents
-\thispagestyle{empty}
-\clearpage
-
-
-% DOKUMENT
-\pagenumbering{arabic}
-
 
 \section{Einführung}
+\pagenumbering{arabic}
 
 \subsection{Vorbemerkungen}
 Beim statistischen Lernen geht es darum, intelligente Schlüsse zu ziehen. Der Fokus dieser Vorlesung liegt auf Methoden zur Analyse, weniger auf Design, und mehr auf Beispielen aus dem Bereich der klinischen Studien. Darüberhinaus erstrecken sich die Anwendungen des statistischen Lernens aber auch auf viele andere Fachgebiete.
@@ -474,7 +482,7 @@ Ein System heißt \emph{Ereignisfeld}, wenn
 \paragraph{Beispiel (Münzwurf):}
 Wir betrachten einen Münzwurf und das Ereignisfeld $ \{A,B,\Omega,\varnothing\} $. Dann kann man folgende Modellierung vornehmen:
 
-\begin{figure}[h]
+\begin{figure}[ht]
 \centering
 \begin{tabular}{ll} 
 Variable & Beschreibung \\ 
@@ -554,7 +562,7 @@ P(A_i\mid B)=\frac{P(B\mid A_i)\cdot P(A_i)}{\sum_{i=1}^nP(B\mid A_j)\cdot P(A_j
 \subsubsection{Anwendung von bedingten Wahrscheinlichkeiten}
 Bedingte Wahrscheinlichkeiten spielen unter anderem eine wichtige Rolle bei diagnostischen Verfahren. Es seien $ D^+,D^- $ (Diagnose) zwei mögliche Krankheitszustände (krank bzw. gesund) und $ T^+,T^- $ (Test) die zwei möglichen Ergebnisse eines diagnostischen Tests. Unter diesen Voraussetzungen führt man folgende Bezeichnungen ein: 
 
-\begin{figure}[h]
+\begin{figure}[ht]
 \centering
 \begin{tabular}{ll}
 Variable & Beschreibung \\
@@ -718,7 +726,6 @@ Im allgemeinen Fall betrachten wir eine Folge $ X=(X_1,\ldots,X_n)^\top_n $ von 
 \lim_{n\to \infty} P\left(\left\lbrace\frac{S_n-n\mathbb{E}(X_1)}{\sqrt{n}\sigma}<t\right\rbrace\right)=\lim_{n\to \infty} P\left(\left\lbrace\sqrt{n}\cdot\frac{\frac{1}{n} S_n-\mathbb{E}(X_1)}{\sigma}<t\right\rbrace\right)=\frac{1}{\sqrt{2\pi}}\int_{-\infty}^{t} e^{-\frac{x^2}{2}}\ \mathrm{d}x.
 \end{align*}
 
-\newpage
 \section{Deskriptive Statistiken}
 Die Beschreibung von Daten und Kohorten ist zentral für das Verständnis einer Arbeit. Ziel ist es, mit wenigen Kenngrößen das Wesentliche zu charakterisieren.
 
@@ -823,7 +830,7 @@ Bei größeren Stichproben wird das Konfidenzintervall üblicherweise schmaler u
 \paragraph{Beispiel (Simpson Paradoxon):} 
 Durch das Simpson Paradoxon kann verdeutlicht werden, dass ein Effekt, der in der Gesamtgruppe beobachtet wird, in Subgruppen anders ausfallen kann. Man betrachte beispielsweise zwei Gruppen $ A,B $ von Fahrschulprüflingen und deren Erfolg bzw. Misserfolg in der Prüfung: 
 
-\begin{figure}[h]
+\begin{figure}[ht]
 \centering
 \begin{tabular}{lrr}
 Gruppe & $ A $ & $ B $ \\ 
@@ -837,7 +844,7 @@ Gesamt & 230 & 232 \\
 
 Hiernach könnte man folgern, dass Schüler in Gruppe $ A $ mehr Erfolg hatten als Schüler in Gruppe $ B $. Unterteilt man die Gruppen jedoch nach Geschlecht, so lässt sich dieser Effekt unter gewissen Umständen nicht auf alle Teilgruppen verallgemeinern: 
 
-\begin{figure}[h]
+\begin{figure}[ht]
 \centering
 \begin{tabular}{llrr}
  & Gruppe & $ A $ & $ B $ \\ 
@@ -852,13 +859,12 @@ W & Erfolg & 63 & 5 \\
 \end{tabular} 
 \end{figure}
 
-\newpage
 \section{Statistisches Testen}
 
 \subsection{Die Logik des Testens}
 Die Logik des Testens weist eine gewisse Analogie zum Beweis durch Widerspruch auf, die man häufig nutzen kann. Beispielsweise könnte man sich fragen, was der Zusammenhang zwischen dem Testergebnis und der Wahrheit der Nullhypothese ist und folgende Überlegungen anstellen: 
 
-\begin{figure}[h]
+\begin{figure}[ht]
 \centering
 \begin{tabular}{p{2cm}p{5cm}p{5cm}}
 & \textbf{Statistisches Testen} & \textbf{Beweis durch Widerspruch}\\
@@ -871,7 +877,7 @@ Ergebnis b) & Ist das Ergebnis plausibel, weiß man wenig über die Annahme, ein
 \end{figure}
 
 \paragraph{Fehlertypen bei Hypothesentests:}~
-\begin{figure}[h]
+\begin{figure}[ht]
 \centering
 \begin{tabular}{p{4cm}p{4cm}p{4cm}}
  & $ H_0 $ stimmt & $ H_0 $ stimmt nicht\\
@@ -906,7 +912,7 @@ Weiter bezeichnet man als $ p $-Wert die Wahrscheinlichkeit, den Wert $ T $ zu b
 Kontingenztafeln sind Tabellen, die die absoluten oder relativen Häufigkeiten (Häufigkeitstabellen) von Kombinationen bestimmter Merkmalsausprägungen enthalten. Kontingenz hat dabei die Bedeutung des gemeinsamen Auftretens von zwei Merkmalen. Das bedeutet, es werden Häufigkeiten für mehrere miteinander durch \glqq und\grqq\ oder \glqq sowie\grqq\ (Konjunktion) verknüpfte Merkmale dargestellt. Diese Häufigkeiten werden ergänzt durch deren Randsummen, die die sogenannten Randhäufigkeiten bilden. Der häufige Spezialfall einer Kontingenztabelle mit zwei Merkmalen ist eine Konfusionsmatrix. 
 
 \paragraph{Beispiel (Odds Ratios):} Gegeben sei die folgende Kontingenztafel:$  $
-\begin{figure}[h]
+\begin{figure}[ht]
 \centering
 \begin{tabular}{llll}
  & $ A $ & $ B $ & Randhäufigkeit\\
@@ -941,7 +947,6 @@ und betrachte \begin{align*}
 \end{align*}
 $ \chi^2 $ hat eine $ \chi^2_f $-Verteilung mit $ f=(l-1)(m-1) $ Freiheitsgraden für $ i=1,\ldots,l $ und $ j=1,\ldots,m $. Als Faustregel gilt, wenn $ n_{ij}\neq 0 $ für alle $ i,j $ gilt und $<25\% $ der Zellen haben $ l_{ij}<5 $, dann kann der $ \chi^2 $-Test angewandt werden.
 
-\newpage
 \section{Statistische Modelle}
 
 \begin{defi}[Statistisches Modell]
@@ -952,7 +957,7 @@ Y=f(X)+\varepsilon
 
 \paragraph{Bezeichnungen:}~
 
-\begin{figure}[h]
+\begin{figure}[ht]
 \centering
 \begin{tabular}{ll}
 Variable & Beschreibung \\ 
@@ -984,6 +989,7 @@ Die Funktion $ f(X) $ wird mittels einer statistischen Lernmethode anhand einer 
 \end{align*}
 vor, wobei $ n $ die Anzahl der Messungen/Beobachtungen bezeichne.
 
+\newpage
 \subsection{Klassifikation von statistischen Lernmethoden}
 
 \subsubsection{Parametrische Methoden}
@@ -1021,7 +1027,7 @@ Y=\beta_0+\beta_1X+\varepsilon.
 
 \paragraph{Bezeichnungen:}~
 
-\begin{figure}[h]
+\begin{figure}[ht]
 \centering
 \begin{tabular}{ll}
 Variable & Beschreibung \\ 
@@ -1110,7 +1116,7 @@ Y=\beta_0+\beta_1X_1+\beta_2X_2+\ldots+\beta_pX_p+\varepsilon.
 \end{align*}
 Dabei gelten folgende Bezeichnungen: 
 
-\begin{figure}[h]
+\begin{figure}[ht]
 \centering
 \begin{tabular}{p{2cm}p{10cm}}
 Variable & Beschreibung\\
@@ -1166,7 +1172,7 @@ Y=\beta_0+\beta_1x_i^{(1)}+\ldots+\beta_kx_i^{(k)}+\varepsilon_i,
 \end{align*}
 $ i\in\{1,\ldots,n\} $. Dabei gelten folgende Bezeichnungen:
 
-\begin{figure}[h]
+\begin{figure}[ht]
 \centering
 \begin{tabular}{ll}
 Variable & Beschreibung\\
@@ -1308,7 +1314,7 @@ Sei $ \varphi=(\varphi_1,\ldots,\varphi_m)^\top $ ein multipler Test und es gelt
 P(\{\varphi_j=1\})\leq \frac{\alpha}{m}
 \end{align*} 
 für alle $ \theta\in\Theta_0^{(j)} $ für alle $ j\in\{1,\ldots,m\} $. Dann folgt $ \mathrm{FWER}_\theta(\varphi)\leq \alpha $ für alle $ \theta\in\Theta $.
-\end{theorem}\par\bigskip
+\end{theorem}\par\bigskip\newpage
 
 \begin{theorem}[Sidak]
 Sei $ \varphi=(\varphi_1,\ldots,\varphi_m)^\top $ ein multipler Test und es seien $ \varphi_j(X) $ stochastisch unabhängig für alle $ j\in\{1,\ldots,m\} $. Es gelte \begin{align*}
@@ -1342,7 +1348,7 @@ und $ j^\ast =\max\{j\in\{1,\ldots,m\}:p_{(j)}\leq \tilde{\alpha}_{m-j+1}\} $ so
 
 \paragraph{False Discovery Rate:}
 Man betrachte:
-\begin{figure}[h]
+\begin{figure}[ht]
 \centering
 \begin{tabular}{p{3cm}p{3cm}p{3cm}p{3cm}}
 & Test nicht ablehnen & Test ablehnen\\
@@ -1355,7 +1361,7 @@ Hypothese falsch & $ m_A(\theta)-S(\theta) $ & $ S(\theta) $ & $ m_A(\theta) $\\
 \end{figure}
 
 mit den folgenden Bezeichnungen: 
-\begin{figure}[h]
+\begin{figure}[ht]
 \centering
 \begin{tabular}{ll}
 Variable & Beschreibung\\
@@ -1382,7 +1388,6 @@ Für $ j\in\{1,\ldots,m\} $ setze $ \tilde{\alpha}_j:=j\cdot\frac{\alpha}{m} $, 
 \end{align*}
 und $ j^\ast:=\max\{j\in\{1,\ldots,m\}:P(j)\leq\tilde{\alpha}_j\} $.
 
-\newpage
 \section{Modellwahl und Regularisierung}
 \begin{align*}
 Y_i=\beta_0+\beta_1x_i^{(1)}+\ldots+\beta_nx_i^{(k)}+\varepsilon_i,
@@ -1554,7 +1559,6 @@ Im Gegensatz zur Ridge-Regression nutzt der Strafterm hier die $ L_1 $-Norm. Dad
 \item Berechne mit dem finalen $ \lambda $ das Modell erneut.
 \end{enumerate}
 
-\newpage
 \section{Resampling}
 
 \subsection{Cross Validation}
@@ -1630,7 +1634,7 @@ Diese Fehler mitteln wir und erhalten \begin{align*}
 \newpage
 \paragraph{Bias-Varianz-Dilemma:}
 Bei unterschiedlicher Nutzung der Daten zum Trainieren und Validieren können folgende Probleme auftreten:
-\begin{figure}[h]
+\begin{figure}[ht]
 \centering
 \begin{tabular}{p{2.5cm}p{2.5cm}p{2.5cm}p{2.5cm}}
 & 50:50 & $ K $-fold CV & LOOCV \\ 
@@ -1673,5 +1677,191 @@ Damit schätzen wir den Standardfehler über einen Varianzschätzer (korrigierte
 \item Mittelwert $ \implies $ Bootstrap-Mittelwert$  $
 \end{itemize}
 
+\section{Generalisierte lineare Modelle}
+
+\subsection{Annahmen für lineare Regressionsmodelle}
+
+\begin{itemize}
+\item Beziehung zwischen $ Y $ und den Kovariablen ist annähernd linear.
+\item Kovariablen sind unabhängig untereinander (keine Kollinearität).
+\item Fehlerterme haben konstante Varianz $ \mathrm{Var}(\varepsilon_i)=\sigma^2\sim N(0,\sigma^2) $.
+\end{itemize}
+
+\paragraph{Probleme bei Kollinearität:}
+\begin{itemize}
+\item Es ist nicht möglich, den Effekt, den die abhängigen Kovariablen auf $ Y $ haben voneinander zu trennen.
+\item Fehler für den Schätzer $ \hat{\beta_i} $ ist erklärt, denn die Annahme für $ \hat{\beta}_i $, dass $ \hat{\beta}_i $ den Effekt von $ X_i $ auf $ Y $ misst genau dann, wenn alle anderen Kovariablen konstant sind, ist nicht mehr erfüllt. Somit ist die Power des $ t $-Tests geringer.
+\end{itemize}
+
+\paragraph{Umgang mit Kollinearität:}
+\begin{itemize}
+\item Entferne alle bis auf eine der linear abhängigen Kovariablen.
+\item Fasse linear abhängige Kovariablen zu einer neuen Kovariablen zusammen (z.B. Mittelwert).
+\end{itemize}
+
+\paragraph{Problem bei fehlender Homoskedaszität:}
+\begin{itemize}
+\item Fehler für $ \hat{\beta}_i $ ist für Wertebereich $ (x_i,y_i) $ mit erklärter Varianz unterschätzt.
+\end{itemize}
+
+\paragraph{Umgang mit fehlender Homoskedaszität:}
+\begin{itemize}
+\item Stabilisieren der Varianz der Fehler: Werte von $ Y $ werden so transformiert, dass hohe Werte von $ Y $ verkleinert werden (z.B. $ \log(Y) $, $ g\log (Y) $, $ \log_2(\frac{1}{2}y+\frac{1}{2}\sqrt{y^2+a^2}) $ für eine Konstante $ a $).
+\item Schätzen der Koeffizienten $ \beta_i $ mittels gewichteter Methode kleinster Quadrate: \begin{align*}
+\mathrm{RSS}&=\sum_{i=1}^{n} w_i(y_i-\hat{y}_i)^2=\sum_{i=1}^{n} \frac{(y_i-\hat{y}_i)^2}{\widehat{\mathrm{Var}}(y_i)}\longrightarrow\min.
+\end{align*}
+\item Anstelle von linearen Modellen werden generalisierte lineare Modelle (GLMs) verwendet. Diese Modelle modellieren den Fehler $ \varepsilon_i $ direkt mit.
+\end{itemize}
+
+\paragraph{Herleitung generalisierter linearer Regressionsmodelle:}
+Das lineare Modell $ Y=\beta_0+\beta_1X+\varepsilon $ kann auch wiefolgt dargestellt werden: \begin{align*}
+\mathbb{E}(Y\mid X)=\mathbb{E}(\beta_0+\beta_1X+\varepsilon)=\mathbb{E}(\beta_0)+\mathbb{E}(\beta_1)X+\mathbb{E}(\varepsilon)=\beta_0+\beta_1X+0.
+\end{align*}
+Der rechte Term kann durch das Inverse einer beliebigen monotonen Funktion dargestellt werden: \begin{align*}
+\mathbb{E}(Y\mid X)=g^{-1}(\beta_0+\beta_1X)
+\end{align*}
+modelliert die Streuung der Beobachtungen $ y_i $ um die geschätzten Werte $ \hat{y}_i $. Die Link-Funktion \begin{align*}
+g(\mathbb{E}(Y\mid X))=\beta_0+\beta_1X
+\end{align*}
+definiert die Beziehung zwischen dem linearen Term $ \beta_0+\beta_1X $ und der bedingten Erwartung $ Y $ gegeben $ X $.
+
+\paragraph{Definition von GLMs:}
+GLMs bestehen aus 3 Komponenten: \begin{enumerate}
+\item[1. Komponente:] Definiert die Verteilung von $ Y $ (random component), wird immer aus der Familie der Exponentialverteilungen genommen: \begin{align*}
+f(Y\mid \theta,\varphi)=\exp\left(\frac{Y\theta-b(\theta)}{a(\varphi)}+c(y,\varphi)\right).
+\end{align*}
+Dabei sind $ \theta $ die Transformation des Erwartungswertes von $ Y $ (Link-Funktion) und $ a,b,c $ sind spezifische Funktionen je nach Typ der gewählten Exponentialverteilung.
+\item[2. Komponente:] linearer Term, welcher die Kovariablen im Modell definiert
+\item[3. Komponente:] Link-Funktion $ \theta $, welche die Beziehung zwischen dem lineare Term und der bedingten Erwartung $ \mathrm{E}(Y\mid X) $ definiert
+\end{enumerate}
+
+\paragraph{Beispiele für GLMs:}
+\begin{figure}[ht]
+\centering
+% \onehalfspacing
+\begin{tabular}{llll}
+Modell & abhängige Variable & Verteil. d. Residuen & Link-Funktion\\
+\midrule
+lineare Regression & quantitativ, stetig & normalverteilt & $ g(\mathbb{E}(Y))=\mathbb{E}(Y) $\\
+log. lin. Regression & diskret & Poissonverteilung & $ g(\mathbb{E}(Y))=\log\mathbb{E}(Y) $\\
+logistische Regression & binär & Binomialverteilung & $ g(\mathbb{E}(Y))=\log(\frac{\mathbb{E}(Y)}{1-\mathbb{E}(Y)}) $
+\end{tabular}
+\end{figure}
+
+\subsection{Schätzen der Parameter für GLM}
+Neben den Koeffizienten $ \beta_i $ muss auch der Dispersionsparameter $ \varphi $ der Dichtefunktion (1. Komponente) geschätzt werden. Beide werden mittels Maximum-Likelihood-Verfahren geschätzt.
+
+\paragraph{Prinzip des Maximum-Likelihood-Verfahrens:}
+Schätzwert $ \hat{\theta} $ für einen beliebigen Parameter $ \theta $ wird so gewählt, dass die Likelihoos-Funktion $ L(\theta\mid x_1,\ldots,x_n) $ für $ n $ Beobachtungen ihr Maximum erreicht. Sind Beobachtungen $ x_i $ unabhängig, ist die Likelihood-Funktion wiefolgt definiert: \begin{align*}
+L(\theta\mid x_1,\ldots,x_n)=\prod_{i=1}^nf(x_i\mid \theta).
+\end{align*}
+Die Likelihood-Funktion ist keine Wahrscheinlichkeitsfunktion oder -dichte, denn ihr Integral hat nicht der Wert 1. Stattdessen werden die Werte für den Parameter $ \theta $ angenommen, die gegeben den Beobachtungen $ x_1,\ldots,x_n $ am wahrscheinlichsten sind. Der Schätzer $ \hat{\theta}_{ML} $ wird so gewählt, dass die Likelihood-Funktion ihr Maximum erreicht, also \begin{align*}
+\frac{\partial L}{\partial \theta}=0.
+\end{align*}
+Oft wird in der Praxis der Logarithmus von $ L $ genommen: \begin{align*}
+\log L(\theta\mid x_1,\ldots,x_n)=\sum_{i=1}^{n} \log f(x_i\mid \theta).
+\end{align*}
+
+\subsection{Schätzen der Kovariablen mittels MLE}
+Die log-Likelihood-Funktion für $ n $ unabhängige Beobachtungen folgt direkt aus der generalisierten Form der Exponentialverteilung: 
+\begin{align*}
+\log \prod f(y_i\mid \theta,\varphi)&=\sum_{i=1}^{n} \log f(x_i\mid \theta),\\
+\log L(\theta,\varphi,y)&=\sum_{i=1}^{n} \frac{y_i\theta_i-b(\theta_i)}{a(\varphi)}+c(y_i,\varphi),
+\end{align*}
+wobei $ \theta_i=g(\mu_i)=\beta_0+\beta_1X_1+\ldots+\beta_pX_p $.
+
+\subsection{Test auf Effekt der Kovariablen bei GLM}
+\begin{enumerate}
+\item Wald-Test
+\item LR-Test
+\end{enumerate}
+
+\paragraph{Wald-Test:}
+Der Wald-Test ist eine generalisierte Form des $ t $-Tests. Der Wert der Teststatistik ist standardnormalverteilt, \begin{align*}
+Z=\frac{\bar{X}-\mu}{\frac{\sigma}{\sqrt{n}}}.
+\end{align*}
+Ein MLE-Schätzer wird mittels einer großen Anzahl von Zufallsvariablen geschätzt. Er kann als Mittelwert aus einerSumme einer großen Anzahl von Zufallsvariablen interpretiert werden. Bei großem $ n $ ist die Summe von identisch und unabhängig verteilten Zufallsvariablen standardnormalverteilt (zentraler Grenzwertsatz) mit Mittelwert $ n\mu $ und Standardabweichung $ n\sigma^2 $.\begin{align*}
+\frac{\sum X_i-n\mu}{\sqrt{n}\sigma}=\frac{n(\frac{1}{n}\sum X_i-\mu)}{\sqrt{n}\sigma}=\frac{n(\bar{X}-\mu)}{\sqrt{n}\sigma}=\frac{\sqrt{n}}{\sigma}(\bar{X}-\mu)=Z.
+\end{align*}
+Seien $ H_0:\beta_i=0 $ und $ H_1:\beta_i\neq 0 $. Dann ist \begin{align*}
+\omega=\frac{\hat{\beta_{i_{ML}}}}{\frac{\sigma}{\sqrt{n}}}\sim N(0,1)
+\end{align*}
+unter $ H_0 $. Denn für große $ n $ folgt der ML-Schätzer einer Normalverteilung und somit ist sein Erwartungswert standardnormalverteilt. Es gilt \begin{align*}
+\omega^2=\frac{\beta_{i_{ML}}^2}{\mathrm{Var}(\beta_{i_{ML}})}\sim\chi^2_{df,1-\alpha}.
+\end{align*}
+Dabei beschreibt die $ \chi^2 $-Verteilung die Verteilung der Quadrate einer standardnormalverteilten Zufallsvariable. Da MLE-Schätzer nur bei großen $ n $ standardnormalverteilt sind, ist der Wald-Test nur bei großen $ n $ zuverlässig.  Im Vergleich zum LR-Test muss nur ein Modell (mit entsprechenden Parametern) gefittet werden. 
+
+\paragraph{Likelihood-Ratio-Test}
+Idee: Es wird die Likelihood der gesamten Modells mit der Likelihood eines reduzierten Modells verglichen. Das reduzierte Modell enthält den Koeffizienten, der getestet werden soll, nicht. Damit definieren sich $ H_0:\beta_1=0 $ und $ H_1:\beta_1\neq 0 $. Die Nullhypothese stimmt genau dann, wenn $ g(\mu)=\beta_0 $ und die Alternativhypothese genau dann, wenn $ g(\mu)=\beta_0+\beta_1x $. Es gilt \begin{align*}
+LR=\frac{P(x_1,\ldots,x_n\mid H_0)}{P(x_1,\ldots,x_n\mid H_1)}=\frac{L(H_0\mid x_1,\ldots,x_n)}{L(H_1\mid x_1,\ldots,x_n)}.
+\end{align*}
+Dabei gilt $ 2\ln LR\sim \chi^2_{df,1-\alpha} $. Der LR-Test erfordert, dass beide Modelle $ g(\mu)=\beta_0 $ und $ g(\mu)=\beta_0+\beta_1x $ gefittet werden müssen. Dafür ist der LR-Test auch bei kleinerer Stichprobengröße zuverlässig.
+
+\section{Grundlagen der Versuchsplanung}
+
+Alle gewonnenen Daten unterliegen einer Vielzahl von Einflussfaktoren. Einige davon sind bekannt, andere sind hingegen unbekannt oder wirken rein zufällig auf die Beobachtungen. 
+\begin{itemize}
+\item Stichprobe muss repräsentiv für die Grundgesamtheit sein.
+\item Alle systematischen Effekte auf die Beobachtungen müssen bei der Versuchsplanung berücksichtigt werden.
+\end{itemize}
+
+\paragraph{Bedingungen:}
+\begin{itemize}
+\item Randomisierung von Proben/Individuen zwischen Gruppen der Grundgesamtheit
+\item Es muss eine ausreichende Anzahl von Replikaten gemessen werden (Stichprobengröße).
+\item Blocking: systematische Effekte müssen bei der Verteilung der Proben in Prozessierungsblöcke be\-rücksichtigt werden.
+\end{itemize}
+
+\subsection{Randomisierung}
+Individuen müssen zufällig (optimalerweise gleichverteilt) den Gruppen, die im Vergleich betrachtet werden, zugeordnet werden.
+
+\paragraph{Beispiel:}
+Gibt es einen signifikanten Effekt, wenn Patienten sich einer Behandlung unterziehen, im Vergleich zu Patienten, die nicht behandelt werden. Dann sollten beide Gruppen (Kontrolle vs. Behandlung) eine balancierte Anzahl z.B. Männer und Frauen bzw. Raucher und Nichtraucher haben.
+
+\paragraph{Gründe:}
+\begin{itemize}
+\item Man kann nicht feststellen, ob ein beobachteter Unterschied  auf einen Effekt der Behandlung oder z.B. Unterschieden im Geschlecht beruht.
+\item Fehler 1. Art ist erklärt, denn Varianz, die aus einer Stichprobe geschätzt wird, kann unterschätzt sein.
+\end{itemize}
+
+\subsection{Replikate}
+Eine hinreichend große Anzahl von Replikaten ist pro Gruppe notwendig, um die Varianz innerhalb einer Gruppe so gut wie möglich abschätzen zu können.
+\begin{itemize}
+\item geringerer Einfluss der nicht-systematischen Fehlers auf die Messergebnisse
+\item $ 1-\beta $ erhöht sich dadurch
+\end{itemize}
+Beachten Sie, dass eine willkürliche Erhöhung der Stichprobengröße $ n $ immer zu einem positiven Testergebnis führen kann.
+
+\paragraph{Gründe:}
+\begin{itemize}
+\item Schätzer sind bei großen Stichproben sehr vertrauenswürdig.
+\item Auch kleine Unterschiede führen dann zu einem signifikanten Testergebnis.
+\item Achten Sie darauf, ob der detektierte Unterschied auch wirklich revelant ist.
+\end{itemize}
+
+\subsection{Blocking}
+Dies ist eine Methode, um den systematischen Effekt während eines Versuchs zu kontrollieren.
+
+\paragraph{Vorgehensweise:}
+Es werden homogene Blöcke gebildet. In jedem Block werden potentielle Einflüsse auf die Ergebnisse konstant gehalten. Der Faktor von Interesse muss innerhalb eines Blockes variieren.
+\begin{itemize}
+\item Innerhalb eines Blockes kann Effekt zwischen bspw. Kontrolle und Test getestet werden, ohne dass Einflüsse der Prozessierungsblöcke auf das Testergebnis wirken.
+\end{itemize}
+
+
+
+
+
+
+
+\section{Fragen}
+\begin{itemize}
+\item $ p $-Wert
+\item Wann werden lineare Regressionsmodelle angewendet?
+\item Varianzaufteilung
+\item LSE
+\item Versuchsplanung
+\end{itemize}
 
 \end{document}
+
